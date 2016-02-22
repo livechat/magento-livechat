@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    <?php if (null !== $block->getLicenseId()): ?>
+        <!-- Start of LiveChat (www.livechatinc.com) code -->
+        window.__lc = window.__lc || {};
+        window.__lc.license = <?php echo $block->getLicenseId() ?>;
+        <?php if (!empty($block->getCustomerDetails())): ?>
+            __lc.visitor = {
+                <?php foreach ($block->getCustomerDetails() as $record): ?>
+                    <?php echo $record['key']?>: "<?php echo $record['value'] ?>",
+                <?php endforeach ?>
+            };
+        <?php endif ?>
+        <?php if (!empty($block->getCustomVariables())): ?>
+            window.__lc.params = [
+                <?php foreach ($block->getCustomVariables() as $record): ?>
+                    { name: '<?php echo $record['name'] ?>', value: '<?php echo $record['value']?>'},
+                <?php endforeach ?>
+            ];
+        <?php endif ?>
+        (function() {
+          var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+          lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+        })();
+        <!-- End of LiveChat code -->
+    <?php else: ?>
+        console.log('Please go to "Stores => Settings => Configuration" and configure your LiveChat account.');
+    <?php endif; ?>
+</script>

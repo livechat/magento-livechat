@@ -1,0 +1,53 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <system>
+        <tab id="livechat" translate="label" sortOrder="50">
+            <label>LiveChat</label>
+            <class>livechat</class>
+        </tab>
+
+        <section id="lc_block_config" translate="label" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>LiveChat</label>
+            <tab>livechat</tab>
+            <resource>LiveChat_LiveChat::mymodule</resource>
+
+            <group id="account" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>LiveChat Account</label>
+                <frontend_model>LiveChat\LiveChat\Block\System\Config\Fieldset\AccountSettintsGroup</frontend_model>
+                <field id="license_email" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <validate>validate-email</validate>
+                    <frontend_model>LiveChat\LiveChat\Block\System\Config\Form\Field\Hidden</frontend_model>
+                </field>
+                <field id="license_id" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <validate>validate-number</validate>
+                    <frontend_model>LiveChat\LiveChat\Block\System\Config\Form\Field\Hidden</frontend_model>
+                </field>
+            </group>
+            <group id="custom_params" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Custom parameters</label>
+                <comment>Enable custom parameters to display additional information about your customers  and their purchases directly in your LiveChat.</comment>
+                <frontend_model>LiveChat\LiveChat\Block\System\Config\Fieldset\CustomParamsGroup</frontend_model>
+
+                <field id="cart_products" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cart products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>See what a customer has in their cart.</comment>
+                </field>
+                <field id="total_cart_value" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Total cart value</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>Know the value of products currently in the cart.</comment>
+                </field>
+                <field id="total_orders_count" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Total orders</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>See how many orders a customer has placed with you in the past.</comment>
+                </field>
+                <field id="last_order_details" translate="label" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Last order details</label>
+                    <source_model>Magento\Config\Model\Config\Source\Enabledisable</source_model>
+                    <comment>See when a customer placed or updated their last order, it's grand total, status and state.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

@@ -1,0 +1,21 @@
+#livechat-settings-comment:before {
+    background-image: url('livechat.png');
+    background-size: 96px 53px;
+    width: 96px; 
+    height: 53px;
+    content: "";
+    float: right;
+    margin-right: 15px;
+}
+
+tr.lc_new_account, span.lc_new_account {
+    display: none;
+}
+
+.lc-hidden {
+    display: none !important;
+}
+
+.lc-show {
+    display: block !important;
+}

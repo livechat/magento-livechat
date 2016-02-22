@@ -1,0 +1,12 @@
+<config>
+    <default>
+        <lc_block_config>
+            <custom_params>
+                <cart_products>1</cart_products>
+                <total_cart_value>1</total_cart_value>
+                <total_orders_count>1</total_orders_count>
+                <last_order_details>1</last_order_details>
+            </custom_params>
+        </lc_block_config>
+    </default>
+</config>
