@@ -112,6 +112,7 @@ require(['jquery'], function($){
 
         $.ajax({
             url: 'https://api.livechatinc.com/licence/operator/' + login + '?callback=?',
+            data: {},
             type: "GET",
             dataType: 'jsonp',
             cache: false,
@@ -151,9 +152,9 @@ require(['jquery'], function($){
     function checkAccount(licenseId) {
         var statusContainer = $('#livechat-account-status');
         $.ajax({
-            url: 'https://api.livechatinc.com/v2/license/' + licenseId,
+            url: 'https://api.livechatinc.com/v2/license/' + licenseId + '?callback=?',
             type: "GET",
-            dataType: 'json',
+            dataType: 'jsonp',
             cache: false,
             beforeSend: function (xhr) {
                 
