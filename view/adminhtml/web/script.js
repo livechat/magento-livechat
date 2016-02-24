@@ -52,8 +52,9 @@ require(['jquery'], function($){
                 if (data.error) {
                     showError('lc_new_account_password', data.error);
                 } else {
-                    console.log('Login: ' + login);
-                    console.log('License: ' + data.license);
+                    $('#lc_block_config_account_license_id').val(data.license);
+                    $('#lc_block_config_account_license_email').val(login);
+                    $('#save').click();
                 }
             },
             error: function (data, status, error) {
