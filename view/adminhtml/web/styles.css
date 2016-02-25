@@ -19,3 +19,9 @@ tr.lc_new_account, span.lc_new_account {
 .lc-show {
     display: block !important;
 }
+
+.lc-disconnect {
+    float: left;
+    font-weight: normal;
+    font-size: smaller;
+}
