@@ -135,12 +135,19 @@ return '<table cellspacing="0" class="form-list ' . ($hidden? 'hidden' : '') . '
                         <span>Create account</span>
                     </button>
                     &nbsp;&nbsp;or&nbsp;
-                    <a href="#" id="use-existing-account" onclick="rjavascript:LiveChatExistingAccountForm(); return false;">Use an existing one</a>
+                    <a href="#" id="use-existing-account" onclick="javascript:LiveChatExistingAccountForm(); return false;">Use an existing one</a>
                 </div>
             </td>
             <td class="scope-label"></td>
             <td class=""></td>
         </tr>
+        ' . ($licenseEmail ? '<tr class="lc_use_existing_account">
+            <td class="label">
+                <a href="#" class="lc-disconnect" onclick="javascript:LiveChatDisconnect(); return false;">
+                    Disconnect
+                </a>
+            </td>
+        </tr>' : '') . '
     </tbody>
 </table>';
     }

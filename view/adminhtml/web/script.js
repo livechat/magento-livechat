@@ -177,12 +177,18 @@ require(['jquery'], function($){
         });
     }
 
+    function disconnect() {
+        $('#lc_block_config_account_license_id').val(null);
+        $('#lc_block_config_account_license_email').val(null);
+        $('#save').click();
+    }
+
     window.LiveChatConnect = LiveChatConnect;
     window.LiveChatCreateNewAccount = LiveChatCreateNewAccount;
     window.LiveChatForm = LiveChatForm;
     window.LiveChatExistingAccountForm = LiveChatExistingAccountForm;
     window.LiveChatNewAccountForm = LiveChatNewAccountForm;
-    window.checkAccount = checkAccount;
+    window.LiveChatDisconnect = disconnect;
     
     if ($('#livechat-account-status').length > 0) {
         checkAccount($('#livechat-account-status').attr('data-license-id'));
