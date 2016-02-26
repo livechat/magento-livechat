@@ -69,6 +69,10 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $orderRecord = $this->orderCollectionFactory->create()->addFieldToFilter('customer_id', $customerId)
             ->addOrder('created_at', 'DESC')->fetchItem();
 
+        if (!($orderRecord instanceof Magento\Sales\Model\Order)) {
+            return null;
+        }
+
         return str_replace(
             array('%createdAt%', '%updatedAt%', '%status%', '%state%', '%grandTotal%', '%currency%'),
             array(
@@ -129,7 +133,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             );
         }
 
-        return rtrim($productDetails, self::PRODUCT_DETAILS_PATTERN);
+        return (null !== $productDetails) ? rtrim($productDetails, self::PRODUCT_DETAILS_PATTERN) : null;
     }
 
     /**
