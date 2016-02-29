@@ -70,7 +70,7 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
     {
         $result = array();
         if ($this->isOrderPlacedPage()) {
-            $result[] = array('name' => 'ORDER_SUCCESS', 'value' => '1');
+            $result[] = array('name' => 'LC_ORDER_SUCCESS', 'value' => '1');
         }
         if (
             true === $this->dataHelper->showCustomParam(Data::LC_CP_SHOW_CART_PRODUCTS) &&
