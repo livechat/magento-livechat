@@ -6,6 +6,7 @@ use \Magento\Customer\Model\Session;
 use \Magento\Checkout\Model\Cart;
 use \Magento\Framework\App\Helper\Context;
 use \Magento\Sales\Model\ResourceModel\Order\CollectionFactory;
+use \Magento\Sales\Model\Order;
 
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -69,7 +70,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $orderRecord = $this->orderCollectionFactory->create()->addFieldToFilter('customer_id', $customerId)
             ->addOrder('created_at', 'DESC')->fetchItem();
 
-        if (!($orderRecord instanceof Magento\Sales\Model\Order)) {
+        if (!($orderRecord instanceof Order)) {
             return null;
         }
 
