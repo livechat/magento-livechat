@@ -17,13 +17,11 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
     /**
      * @param \Magento\Framework\View\Element\Template\Context $context
      * @param Data $dataHelper
-     * @param \Magento\Framework\UrlInterface $urlinterface
      * @param array $data
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         Data $dataHelper,
-        \Magento\Framework\UrlInterface $urlinterface,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -110,7 +108,7 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
     private function isOrderPlacedPage()
     {
         if (
-            'checkout/onepage/success/' === str_replace($this->getBaseUrl(), '', $this->urlinterface->getCurrentUrl())
+            'checkout/onepage/success/' === str_replace($this->getBaseUrl(), '', $this->context->_urlBuilder->getCurrentUrl())
         ) {
             return true;
         }
