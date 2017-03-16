@@ -10,7 +10,7 @@ require(['jquery'], function($){
             showError('lc_new_account_email', 'Please enter your email address.');
             isError = true;
         }
-        
+
         if (/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test(login) === false) {
             showError('lc_new_account_email', 'Please enter a valid email address.');
             isError = true;
@@ -25,11 +25,11 @@ require(['jquery'], function($){
             showError('lc_new_account_password', 'Please choose a password.');
             isError = true;
         }
-        
+
         if (isError) {
             return;
         }
-        
+
         var name = login.split("@")[0].split('+')[0];
 
         $.ajax({
@@ -83,7 +83,7 @@ require(['jquery'], function($){
         $('span.lc_new_account').hide();
         $('span.lc_use_existing_account').show();
     }
-    
+
     function LiveChatNewAccountForm() {
         $('tr.lc_use_existing_account').hide();
         $('tr.lc_new_account').show();
@@ -143,12 +143,12 @@ require(['jquery'], function($){
         $('#' + inputId).addClass('mage-error');
         $('#' + inputId + '-error').text(message).removeClass('lc-hidden').addClass('lc-show');
     }
-    
+
     function hideError(inputId) {
         $('#' + inputId).removeClass('mage-error');
         $('#' + inputId + '-error').addClass('lc-hidden').removeClass('lc-show');
     }
-    
+
     function checkAccount(licenseId) {
         var statusContainer = $('#livechat-account-status');
         $.ajax({
@@ -157,7 +157,7 @@ require(['jquery'], function($){
             dataType: 'jsonp',
             cache: false,
             beforeSend: function (xhr) {
-                
+
             },
             success: function (data, status, error) {
                 if (data.error) {
@@ -189,8 +189,10 @@ require(['jquery'], function($){
     window.LiveChatExistingAccountForm = LiveChatExistingAccountForm;
     window.LiveChatNewAccountForm = LiveChatNewAccountForm;
     window.LiveChatDisconnect = disconnect;
-    
+
     if ($('#livechat-account-status').length > 0) {
         checkAccount($('#livechat-account-status').attr('data-license-id'));
     }
+
+    window.setTimeout(function(){$('#config-edit-form').unbind('submit');},3000)
 });
