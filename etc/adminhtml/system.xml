@@ -6,9 +6,9 @@
 		</tab>
 		<section id="lc_block_config" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
 			<class>separator-top</class>
-			<label>LiveChat Settings</label>
+			<label>Settings</label>
 			<tab>LiveChat_LiveChat</tab>
-			<resource>LiveChat_LiveChat::livechat_livechat_control</resource>
+			<resource>LiveChat_LiveChat::livechatrulez</resource>
 			<frontend_model>LiveChat\LiveChat\Block\System\Config\LiveChatForm</frontend_model>
 		</section>
 	</system>
