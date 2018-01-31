@@ -1,89 +1,89 @@
 <div id="login_panel" style="align-items: center; <?php echo $block->getLicenseId() > 0 ? 'display: none;' : ' display: flex;' ?>">
-   <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
-      <div style="display: flex; flex-direction: row; align-items: center;">
-         <img src='<?php echo $this->getViewFileUrl('LiveChat_LiveChat::img/livechat-magento@2x.png'); ?>' alt="Demo" class="livechat_logo2" >
-      </div>
-      <div id="login_form">
-         <div class="progress-button hidden">
-            Saving...
-         </div>
-         <div>				
-            <iframe id="login-with-livechat" src="https://addons.livechatinc.com/sign-in-with-livechat"> </iframe>
-         </div>
-      </div>
-      <div class="or-delimiter">or</div>
-      <div id="livechat_link" style="font-size: 15px; margin-top:4px;">
-         <a href="https://my.livechatinc.com/signup?utm_source=drupal.com&utm_medium=integration&utm_campaign=drupal_integration" target="_blank">create an account</a>
-      </div>
-   </div>
+	<div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+		<div style="display: flex; flex-direction: row; align-items: center;">
+		<img src='<?php echo $this->getViewFileUrl('LiveChat_LiveChat::img/livechat-magento@2x.png'); ?>' alt="Demo" class="livechat_logo2" >
+		</div>
+		<div id="login_form">
+		<div class="progress-button hidden">
+			Saving...
+		</div>
+		<div>				
+			<iframe id="login-with-livechat" src="https://addons.livechatinc.com/sign-in-with-livechat"> </iframe>
+		</div>
+		</div>
+		<div class="or-delimiter">or</div>
+		<div id="livechat_link" style="font-size: 15px; margin-top:4px;">
+		<a href="https://my.livechatinc.com/signup?utm_source=drupal.com&utm_medium=integration&utm_campaign=drupal_integration" target="_blank">create an account</a>
+		</div>
+	</div>
 </div>
 <div id="admin_panel" style="<?php echo $block->getLicenseId() > 0 ? 'display: block;' : 'display: none;' ?>" >
-   <div id="livechat_panel">
-      <div style="max-width: 560px;">
-         <h3>Your LiveChat is now ready!</h3>
-         <div style="margin-bottom: -4px;">You are now rocking chat window from your <span id="livechat_login" style="font-weight: bold;"><?php echo $block->getLicenseEmail(); ?></span> account.</div>
-         <div class="section-config active">
-            <div class="entry-edit-head admin__collapsible-block"><span id="lc_block_config_custom_params-link" class="entry-edit-head-link"></span><a id="lc_block_config_custom_params-head" href="#lc_block_config_custom_params-link" onclick="Fieldset.toggleCollapse('lc_block_config_custom_params'); return false;" class="open">Custom parameters</a></div>
-            <input id="lc_block_config_custom_params-state" type="hidden" value="1">
-            <fieldset class="config admin__collapsible-block" id="lc_block_config_custom_params">
-               <legend>Custom parameters</legend>
-               <div class="comment">Enable custom parameters to display additional information about your customers  and their purchases directly in your LiveChat.</div>
-               <table cellspacing="0" class="form-list">
-                  <tbody>
-                     <tr id="row_lc_block_config_custom_params_cart_products">
-                        <td class="label"><label for="lc_block_config_custom_params_cart_products"><span data-config-scope="[STORE VIEW]">Cart products</span></label></td>
-                        <td class="value">
-                           <select id="lc_block_config_custom_params_cart_products" class="select admin__control-select">
-                              <option value="1" <?php echo ($block->isSetCartProducts() == true ? 'selected="selected"' : '')?>>Enable</option>
-                              <option value="0" <?php echo ($block->isSetCartProducts() == true ? '' : 'selected="selected"')?>>Disable</option>
-                           </select>
-                           <p class="note"><span>See what a customer has in their cart.</span></p>
-                        </td>
-                        <td class="">
-                           <a data-tooltip="See what a customer has in their cart." data-tooltip-position="top" target="_blank"><img src='<?php echo $this->getViewFileUrl('LiveChat_LiveChat::img/question_mark.png'); ?>' alt="question_mark" class="question_mark" ></a>
-                        </td>
-                     </tr>
-                     <tr id="row_lc_block_config_custom_params_total_cart_value">
-                        <td class="label"><label for="lc_block_config_custom_params_total_cart_value"><span data-config-scope="[STORE VIEW]">Total cart value</span></label></td>
-                        <td class="value">
-                           <select id="lc_block_config_custom_params_total_cart_value" class="select admin__control-select">
-                              <option value="1" <?php echo ($block->isSetTotalCartValue() == true ? 'selected="selected"' : '')?>>Enable</option>
-                              <option value="0" <?php echo ($block->isSetTotalCartValue() == true ? '' : 'selected="selected"')?>>Disable</option>
-                           </select>
-                           <p class="note"><span>Know the value of products currently in the cart.</span></p>
-                        </td>
-                        <td class=""></td>
-                     </tr>
-                     <tr id="row_lc_block_config_custom_params_total_orders_count">
-                        <td class="label"><label for="lc_block_config_custom_params_total_orders_count"><span data-config-scope="[STORE VIEW]">Total orders</span></label></td>
-                        <td class="value">
-                           <select id="lc_block_config_custom_params_total_orders_count" class="select admin__control-select">
-                              <option value="1" <?php echo ($block->isSetTotalOrdersCount() == true ? 'selected="selected"' : '')?>>Enable</option>
-                              <option value="0" <?php echo ($block->isSetTotalOrdersCount() == true ? '' : 'selected="selected"')?>>Disable</option>
-                           </select>
-                           <p class="note"><span>See how many orders a customer has placed with you in the past.</span></p>
-                        </td>
-                        <td class=""></td>
-                     </tr>
-                     <tr id="row_lc_block_config_custom_params_last_order_details">
-                        <td class="label"><label for="lc_block_config_custom_params_last_order_details"><span data-config-scope="[STORE VIEW]">Last order details</span></label></td>
-                        <td class="value">
-                           <select id="lc_block_config_custom_params_last_order_details" class="select admin__control-select">
-                              <option value="1" <?php echo ($block->isSetLastOrderDetalils() == true ? 'selected="selected"' : '')?>>Enable</option>
-                              <option value="0" <?php echo ($block->isSetLastOrderDetalils() == true ? '' : 'selected="selected"')?>>Disable</option>
-                           </select>
-                           <p class="note"><span>See when a customer placed or updated their last order, it's grand total, status and state.</span></p>
-                        </td>
-                        <td class=""></td>
-                     </tr>
-                  </tbody>
-               </table>
-            </fieldset>
-         </div>
-         <p>Need help? Check out our <a href="https://www.livechatinc.com/kb/magento-livechat-integration/?utm_source=magento.com&amp;utm_medium=integration&amp;utm_campaign=magento_integration" target="_blank">LiveChat for Magento 2 integration tutorial</a>.</p>
-         <p class="reset-settings">Something went wrong? <a class="reset-settings" href="#" id="reset_settings">Click here</a> to reset settings!</p>
-      </div>
-   </div>
+	<div id="livechat_panel">
+		<div style="max-width: 560px;">
+		<h3>Your LiveChat is now ready!</h3>
+		<div style="margin-bottom: -4px;">You are now rocking chat window from your <span id="livechat_login" style="font-weight: bold;"><?php echo $block->getLicenseEmail(); ?></span> account.</div>
+		<div class="section-config active">
+			<div class="entry-edit-head admin__collapsible-block"><span id="lc_block_config_custom_params-link" class="entry-edit-head-link"></span><a id="lc_block_config_custom_params-head" href="#lc_block_config_custom_params-link" onclick="Fieldset.toggleCollapse('lc_block_config_custom_params'); return false;" class="open">Custom parameters</a></div>
+			<input id="lc_block_config_custom_params-state" type="hidden" value="1">
+			<fieldset class="config admin__collapsible-block" id="lc_block_config_custom_params">
+				<legend>Custom parameters</legend>
+				<div class="comment">Enable custom parameters to display additional information about your customers	and their purchases directly in your LiveChat.</div>
+				<table cellspacing="0" class="form-list">
+					<tbody>
+					<tr id="row_lc_block_config_custom_params_cart_products">
+						<td class="label"><label for="lc_block_config_custom_params_cart_products"><span data-config-scope="[STORE VIEW]">Cart products</span></label></td>
+						<td class="value">
+							<select id="lc_block_config_custom_params_cart_products" class="select admin__control-select">
+								<option value="1" <?php echo ($block->isSetCartProducts() == true ? 'selected="selected"' : '')?>>Enable</option>
+								<option value="0" <?php echo ($block->isSetCartProducts() == true ? '' : 'selected="selected"')?>>Disable</option>
+							</select>
+							<p class="note"><span>See what a customer has in their cart.</span></p>
+						</td>
+						<td class="">
+							<a data-tooltip="See what a customer has in their cart." data-tooltip-position="top" target="_blank"><img src='<?php echo $this->getViewFileUrl('LiveChat_LiveChat::img/question_mark.png'); ?>' alt="question_mark" class="question_mark" ></a>
+						</td>
+					</tr>
+					<tr id="row_lc_block_config_custom_params_total_cart_value">
+						<td class="label"><label for="lc_block_config_custom_params_total_cart_value"><span data-config-scope="[STORE VIEW]">Total cart value</span></label></td>
+						<td class="value">
+							<select id="lc_block_config_custom_params_total_cart_value" class="select admin__control-select">
+								<option value="1" <?php echo ($block->isSetTotalCartValue() == true ? 'selected="selected"' : '')?>>Enable</option>
+								<option value="0" <?php echo ($block->isSetTotalCartValue() == true ? '' : 'selected="selected"')?>>Disable</option>
+							</select>
+							<p class="note"><span>Know the value of products currently in the cart.</span></p>
+						</td>
+						<td class=""></td>
+					</tr>
+					<tr id="row_lc_block_config_custom_params_total_orders_count">
+						<td class="label"><label for="lc_block_config_custom_params_total_orders_count"><span data-config-scope="[STORE VIEW]">Total orders</span></label></td>
+						<td class="value">
+							<select id="lc_block_config_custom_params_total_orders_count" class="select admin__control-select">
+								<option value="1" <?php echo ($block->isSetTotalOrdersCount() == true ? 'selected="selected"' : '')?>>Enable</option>
+								<option value="0" <?php echo ($block->isSetTotalOrdersCount() == true ? '' : 'selected="selected"')?>>Disable</option>
+							</select>
+							<p class="note"><span>See how many orders a customer has placed with you in the past.</span></p>
+						</td>
+						<td class=""></td>
+					</tr>
+					<tr id="row_lc_block_config_custom_params_last_order_details">
+						<td class="label"><label for="lc_block_config_custom_params_last_order_details"><span data-config-scope="[STORE VIEW]">Last order details</span></label></td>
+						<td class="value">
+							<select id="lc_block_config_custom_params_last_order_details" class="select admin__control-select">
+								<option value="1" <?php echo ($block->isSetLastOrderDetalils() == true ? 'selected="selected"' : '')?>>Enable</option>
+								<option value="0" <?php echo ($block->isSetLastOrderDetalils() == true ? '' : 'selected="selected"')?>>Disable</option>
+							</select>
+							<p class="note"><span>See when a customer placed or updated their last order, it's grand total, status and state.</span></p>
+						</td>
+						<td class=""></td>
+					</tr>
+					</tbody>
+				</table>
+			</fieldset>
+		</div>
+		<p>Need help? Check out our <a href="https://www.livechatinc.com/kb/magento-livechat-integration/?utm_source=magento.com&amp;utm_medium=integration&amp;utm_campaign=magento_integration" target="_blank">LiveChat for Magento 2 integration tutorial</a>.</p>
+		<p class="reset-settings">Something went wrong? <a class="reset-settings" href="#" id="reset_settings">Click here</a> to reset settings!</p>
+		</div>
+	</div>
 </div>
 <div id="save-props-url" hidden><?php echo $block->getUrl('livechat/setprops');?></div>
 <div id="save-license-url" hidden><?php echo $block->getUrl('livechat/setlicense');?></div>
