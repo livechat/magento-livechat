@@ -1,27 +1,215 @@
-#livechat-settings-comment:before {
-    background-image: url('livechat.png');
-    background-size: 96px 53px;
-    width: 96px; 
-    height: 53px;
-    content: "";
-    float: right;
-    margin-right: 15px;
+
+[data-tooltip] {
+	display: inline-block;
+	position: relative;
+	cursor: help;
+	padding: 0px;
+}
+/* Tooltip styling */
+[data-tooltip]:before {
+	content: attr(data-tooltip);
+	font-style: normal;
+	display: none;
+	position: absolute;
+	background: #eee;
+	color: rgba(0, 0, 0, 0.73);
+	padding: 7px;
+	font-size: 12px;
+	line-height: 1.2;
+	min-width: 120px;
+	text-align: center;
+	border-radius: 4px;
+}
+/* Dynamic horizontal centering */
+[data-tooltip-position="top"]:before,
+[data-tooltip-position="bottom"]:before {
+	left: 50%;
+	-ms-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+/* Dynamic vertical centering */
+[data-tooltip-position="right"]:before,
+[data-tooltip-position="left"]:before {
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+[data-tooltip-position="top"]:before {
+	bottom: 255%;
+	margin-bottom: 6px;
+}
+[data-tooltip-position="right"]:before {
+	left: 100%;
+	margin-left: 6px;
+}
+[data-tooltip-position="bottom"]:before {
+	top: 100%;
+	margin-top: 6px;
+}
+[data-tooltip-position="left"]:before {
+	right: 100%;
+	margin-right: 6px;
 }
 
-tr.lc_new_account, span.lc_new_account {
-    display: none;
+/* Tooltip arrow styling/placement */
+[data-tooltip]:after {
+	content: '';
+	display: none;
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-color: transparent;
+	border-style: solid;
+}
+/* Dynamic horizontal centering for the tooltip */
+[data-tooltip-position="top"]:after,
+[data-tooltip-position="bottom"]:after {
+	left: 50%;
+	margin-left: -6px;
+}
+/* Dynamic vertical centering for the tooltip */
+[data-tooltip-position="right"]:after,
+[data-tooltip-position="left"]:after {
+	top: 50%;
+	margin-top: -6px;
+}
+[data-tooltip-position="top"]:after {
+	bottom: 255%;
+	border-width: 6px 6px 0;
+	border-top-color: #eee;
+	margin-left: -19px;
+}
+[data-tooltip-position="right"]:after {
+	left: 100%;
+	border-width: 6px 6px 6px 0;
+	border-right-color: #eee;
+}
+[data-tooltip-position="bottom"]:after {
+	top: 100%;
+	border-width: 0 6px 6px;
+	border-bottom-color: #eee;
+}
+[data-tooltip-position="left"]:after {
+	right: 100%;
+	border-width: 6px 0 6px 6px;
+	border-left-color: #eee;
+}
+/* Show the tooltip when hovering */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+	display: block;
+	z-index: 50;
 }
 
-.lc-hidden {
-    display: none !important;
+@media only screen and (max-width:975px) {
+	#livechat_panel, #login_panel {
+		flex-direction: column;
+	}
+	.livechat_screenshot {
+		height: 250px!important;
+		background-position: center 1.5em!important;
+	}
 }
 
-.lc-show {
-    display: block !important;
+.livechat-admin-settings-form .edit-submit {
+	background-image: linear-gradient(to bottom, white, white);
+	border: none;
+	font-size: 85%;
+	text-decoration: underline;
+	color: #999;
+	text-shadow: none;
+	outline-style: none;
+	margin-left: 0px;
+	padding-left: 0px;
 }
 
-.lc-disconnect {
-    float: left;
-    font-weight: normal;
-    font-size: smaller;
+.livechat-admin-settings-form .edit-submit:hover {
+	background-image: linear-gradient(to bottom, white, white);
+	border: none;
+	box-shadow: none;
+	border-shadow:none;
+	color: #999;
+	text-shadow: none;
+	outline-style: none;
+}
+
+.livechat-admin-settings-form .edit-submit:focus {
+	background-image: linear-gradient(to bottom, white, white);
+	border: none;
+	box-shadow: none;
+	border-shadow:none;
+	color: #999;
+	text-shadow: none;
+	outline-style: none;
+}
+
+
+#edit-webapp-link-container > a:nth-child(3) {
+	margin-left: 7px;
+}
+
+
+
+#edit-save-advanced {
+	border-radius: 0.143rem;
+	margin-left: 0px;
+	margin-top: 8px;
+	margin-bottom: 13px;
+}
+
+.js-form-item-sounds {
+	margin-top: 0px!important;
+}
+
+iframe#login-with-livechat,
+#login_form {
+	margin-left: 5px;
+	width: 214px;
+	height: 43px;
+	border: none;
+}
+
+.livechat_logo2 {
+	width: 600px;
+	height: 330px;
+	
+	background-size: 600px;
+	background-repeat: no-repeat;
+}
+
+.or-delimiter {
+	margin-top: 8px;
+}
+
+.fadein, .fadeout {
+	opacity: 0;
+	-moz-transition: opacity 0.4s ease-in-out;
+	-o-transition: opacity 0.4s ease-in-out;
+	-webkit-transition: opacity 0.4s ease-in-out;
+	transition: opacity 0.4s ease-in-out;
+}
+.fadein {
+	opacity: 1;
+}
+
+.question_mark {
+	width: 30px;
+    height: 30px;
+    opacity: 0.8;
+    margin-bottom: 1px;
+    margin-left: -25px;
+    padding-bottom: 14px;
+}
+
+.disable_advanced_settings {
+	opacity: 0.2;
+	pointer-events: none;
+}
+
+.reset-settings {
+	color: #cacaca;
 }
