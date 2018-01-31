@@ -14,6 +14,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         'Created at: %createdAt%, updated at: %updatedAt%, status: %status%, state: %state%, grand total: %grandTotal% %currency%';
     const PRODUCT_DETAILS_PATTERN = '%name% (%qty%) %price% %currency%; ';
     const LC_LICENSE_ID = 'lc_block_config/account/license_id';
+	const LC_LICENSE_EMAIL = 'lc_block_config/account/license_email';
     const LC_CP_SHOW_CART_PRODUCTS = 'lc_block_config/custom_params/cart_products';
     const LC_CP_SHOW_TOTAL_CART_VALUE = 'lc_block_config/custom_params/total_cart_value';
     const LC_CP_SHOW_TOTAL_ORDERS_COUNT = 'lc_block_config/custom_params/total_orders_count';
@@ -55,6 +56,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getLicenseId()
     {
         return $this->scopeConfig->getValue(self::LC_LICENSE_ID, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+    }
+	
+	public function getLicenseEmail()
+    {
+        return $this->scopeConfig->getValue(self::LC_LICENSE_EMAIL, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**
