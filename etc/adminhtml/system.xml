@@ -8,7 +8,7 @@
 			<class>separator-top</class>
 			<label>Settings</label>
 			<tab>LiveChat_LiveChat</tab>
-			<resource>LiveChat_LiveChat::livechatrulez</resource>
+			<resource>LiveChat_LiveChat::mymodule</resource>
 			<frontend_model>LiveChat\LiveChat\Block\System\Config\LiveChatForm</frontend_model>
 		</section>
 	</system>
