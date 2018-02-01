@@ -1,27 +1,112 @@
-#livechat-settings-comment:before {
-    background-image: url('livechat.png');
-    background-size: 96px 53px;
-    width: 96px; 
-    height: 53px;
-    content: "";
-    float: right;
-    margin-right: 15px;
+@media only screen and (max-width:975px) {
+	#livechat_panel, #login_panel {
+		flex-direction: column;
+	}
+	.livechat_screenshot {
+		height: 250px!important;
+		background-position: center 1.5em!important;
+	}
 }
 
-tr.lc_new_account, span.lc_new_account {
-    display: none;
+.livechat-admin-settings-form .edit-submit {
+	background-image: linear-gradient(to bottom, white, white);
+	border: none;
+	font-size: 85%;
+	text-decoration: underline;
+	color: #999;
+	text-shadow: none;
+	outline-style: none;
+	margin-left: 0px;
+	padding-left: 0px;
 }
 
-.lc-hidden {
-    display: none !important;
+.livechat-admin-settings-form .edit-submit:hover {
+	background-image: linear-gradient(to bottom, white, white);
+	border: none;
+	box-shadow: none;
+	border-shadow:none;
+	color: #999;
+	text-shadow: none;
+	outline-style: none;
 }
 
-.lc-show {
-    display: block !important;
+.livechat-admin-settings-form .edit-submit:focus {
+	background-image: linear-gradient(to bottom, white, white);
+	border: none;
+	box-shadow: none;
+	border-shadow:none;
+	color: #999;
+	text-shadow: none;
+	outline-style: none;
 }
 
-.lc-disconnect {
-    float: left;
-    font-weight: normal;
-    font-size: smaller;
+
+#edit-webapp-link-container > a:nth-child(3) {
+	margin-left: 7px;
+}
+
+
+
+#edit-save-advanced {
+	border-radius: 0.143rem;
+	margin-left: 0px;
+	margin-top: 8px;
+	margin-bottom: 13px;
+}
+
+.js-form-item-sounds {
+	margin-top: 0px!important;
+}
+
+iframe#login-with-livechat,
+#login_form {
+	margin-left: 5px;
+	width: 214px;
+	height: 43px;
+	border: none;
+}
+
+.livechat_logo2 {
+	width: 600px;
+	height: 330px;
+	
+	background-size: 600px;
+	background-repeat: no-repeat;
+}
+
+.or-delimiter {
+	margin-top: 8px;
+}
+
+.fadein, .fadeout {
+	opacity: 0;
+	-moz-transition: opacity 0.4s ease-in-out;
+	-o-transition: opacity 0.4s ease-in-out;
+	-webkit-transition: opacity 0.4s ease-in-out;
+	transition: opacity 0.4s ease-in-out;
+}
+.fadein {
+	opacity: 1;
+}
+
+.question_mark {
+	width: 30px;
+	height: 30px;
+	opacity: 0.8;
+	margin-bottom: 1px;
+	margin-left: -25px;
+	padding-bottom: 14px;
+}
+
+.disable_advanced_settings {
+	opacity: 0.2;
+	pointer-events: none;
+}
+
+.reset-settings {
+	color: #cacaca;
+}
+
+.arrow-hidden #lc_block_config_custom_params-head:before {
+	visibility: hidden;
 }
