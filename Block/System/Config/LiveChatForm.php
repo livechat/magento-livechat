@@ -2,7 +2,6 @@
 namespace LiveChat\LiveChat\Block\System\Config;
 
 use \LiveChat\LiveChat\Helper\Data;
-//use Magento\Framework\View\Element\Template;
 
 class LiveChatForm extends \Magento\Framework\View\Element\Template
 {
