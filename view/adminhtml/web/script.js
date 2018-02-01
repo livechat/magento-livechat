@@ -65,8 +65,13 @@ require(['jquery'], function ($) {
 	};
 
 	function receiveMessage(event) {
-		var livechatMessage = JSON.parse(event.data);
-
+		try {
+			var livechatMessage = JSON.parse(event.data);
+		}
+		catch(err) {
+			console.log(JSON.stringify(err));
+		}
+		
 		if (livechatMessage.type === 'logged-in' && livechatMessage.eventTrigger === 'click') {
 
 			$('#login_panel').hide();
