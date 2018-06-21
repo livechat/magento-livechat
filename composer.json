@@ -1,7 +1,7 @@
 {
 	"name": "livechat/module-magento-livechat",
 	"require": {
-		"php": "~5.5.0|~5.6.0|~7.0.0|~7.1.0",
+		"php": "~7.0.0|~7.1.0",
 		"magento/module-store": "100.*",
 		"magento/module-customer": "100.*|101.*",
 		"magento/module-checkout": "100.*",
@@ -11,7 +11,7 @@
 		"magento/framework": "100.*|101.0.*"
 	},
 	"type": "magento2-module",
-	"version": "2.1.2",
+	"version": "2.1.3",
 	"license": [
 		"OSL-3.0",
 		"AFL-3.0"
