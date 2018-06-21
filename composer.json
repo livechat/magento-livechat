@@ -1,7 +1,7 @@
 {
 	"name": "livechat/module-magento-livechat",
 	"require": {
-    "php": "5.5.0|5.6.0|~7.0.0|~7.1.0",
+	"php": "~5.5.0|~5.6.0|~7.0.0|~7.1.0",
 		"magento/module-store": "100.*",
 		"magento/module-customer": "100.*|101.*",
 		"magento/module-checkout": "100.*",
