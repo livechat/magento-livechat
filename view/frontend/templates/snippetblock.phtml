@@ -1,11 +1,12 @@
 <script src = "<?php echo $block->getUrl('livechat/getcart'); ?>"></script>
 <script src = "<?php echo $block->getUrl('livechat/getvisitor'); ?>"></script>
 <?php if (null !== $block->getLicenseId()): ?>
-  <script>
+<script>
   window.__lc = window.__lc || {};
   window.__lc.license = <?php echo $block->getLicenseId() ?>;
-  if(visitor_data) {
-    __lc.visitor = visitor_data;
+
+  if(livechat_visitor_data) {
+    window.__lc.visitor = livechat_visitor_data;
   }
 
   (function() {
@@ -14,14 +15,13 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
   })(); 
 
-  if(custom_variables && custom_variables.length > 0) {
+  if(livechat_custom_variables && livechat_custom_variables.length > 0) {
     var LC_API = LC_API || {};
     LC_API.on_after_load = function() {
-      console.log(custom_variables);
-      LC_API.set_custom_variables(custom_variables);
+      LC_API.set_custom_variables(livechat_custom_variables);
     }
   }
-  </script>
+</script>
 <?php else: ?>
   console.log('Please go to "Stores => Settings => Configuration" and configure your LiveChat account.');
 <?php endif; ?>
