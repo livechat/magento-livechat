@@ -1,6 +1,6 @@
+<?php if (null !== $block->getLicenseId()): ?>
 <script src = "<?php echo $block->getUrl('livechat/getcart'); ?>"></script>
 <script src = "<?php echo $block->getUrl('livechat/getvisitor'); ?>"></script>
-<?php if (null !== $block->getLicenseId()): ?>
 <script>
   window.__lc = window.__lc || {};
   window.__lc.license = <?php echo $block->getLicenseId() ?>;
