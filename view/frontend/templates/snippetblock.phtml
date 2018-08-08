@@ -1,5 +1,4 @@
 <?php if (null !== $block->getLicenseId()): ?>
-<script src = "<?php echo $block->getUrl('livechat/getcart'); ?>"></script>
 <script src = "<?php echo $block->getUrl('livechat/getvisitor'); ?>"></script>
 <script>
   window.__lc = window.__lc || {};
@@ -15,11 +14,18 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
   })(); 
 
-  if(livechat_custom_variables && livechat_custom_variables.length > 0) {
-    var LC_API = LC_API || {};
-    LC_API.on_after_load = function() {
-      LC_API.set_custom_variables(livechat_custom_variables);
-    }
+  var LC_API = LC_API || {};
+  LC_API.on_after_load = function() {
+    setInterval(function(){
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          LC_API.set_custom_variables(JSON.parse(this.responseText));
+        }
+      };
+      xhttp.open("GET", "<?php echo $block->getUrl('livechat/getcart'); ?>", true);
+      xhttp.send();
+    }, 30000);
   }
 </script>
 <?php else: ?>

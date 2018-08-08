@@ -58,9 +58,9 @@ class Index extends \Magento\Framework\App\Action\Action
 
     public function execute()
     {
-        $custom_variables = 'var livechat_custom_variables = '.$this->_serializer->serialize($this->getCustomVariables());
+        $custom_variables = $this->_serializer->serialize($this->getCustomVariables());
     
-        header('Content-type: application/javascript');
+        header('Content-type: application/json');
         echo $custom_variables;    
     }
     
