@@ -1,8 +1,6 @@
 <?php
 namespace LiveChat\LiveChat\Controller\GetCart;
 
-use \LiveChat\LiveChat\Helper\Data;
-
 class Index extends \Magento\Framework\App\Action\Action
 {
     const LAST_ORDER_DETAILS_PATTERN =
@@ -28,11 +26,8 @@ class Index extends \Magento\Framework\App\Action\Action
 	/**
 	 * @var ScopeConfigInterface
 	 */
-	protected $_scopeConfig;
-	/**
-	 * @var Serializer
-	 */
-	protected $_serializer;
+    protected $_scopeConfig;
+    
 	/**
 	 * @var UrlInterface
 	 */
@@ -41,7 +36,6 @@ class Index extends \Magento\Framework\App\Action\Action
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
         \Magento\Framework\View\Element\Template\Context $templateContext,
-        \Magento\Framework\Serialize\Serializer\Json $serializer,
         \Magento\Checkout\Model\Cart $cart, 
         \Magento\Customer\Model\Session $customerSession, 
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
@@ -52,13 +46,12 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->_scopeConfig = $scopeConfig;
         $this->_urlinterface = $templateContext->getUrlBuilder();
-        $this->_serializer = $serializer;
         return parent::__construct($context);
     } 
 
     public function execute()
     {
-        $custom_variables = $this->_serializer->serialize($this->getCustomVariables());
+        $custom_variables = json_encode($this->getCustomVariables());
     
         header('Content-type: application/json');
         echo $custom_variables;    
@@ -176,28 +169,28 @@ class Index extends \Magento\Framework\App\Action\Action
             $result[] = array('name' => 'LC_ORDER_SUCCESS', 'value' => '1');
         }
         if (
-            true === $this->showCustomParam(Data::LC_CP_SHOW_CART_PRODUCTS) &&
+            true === $this->showCustomParam(self::LC_CP_SHOW_CART_PRODUCTS) &&
             null !== ($productDetails = $this->getProductDetails())
         ) {
             $result[] = array('name' => 'Cart products', 'value' => $productDetails);
         }
 
         if (
-            true === $this->showCustomParam(Data::LC_CP_SHOW_TOTAL_CART_VALUE) &&
+            true === $this->showCustomParam(self::LC_CP_SHOW_TOTAL_CART_VALUE) &&
             null !== ($cartTotal = $this->getCartGrandTotal())
         ) {
             $result[] = array('name' => 'Cart total value', 'value' => $cartTotal);
         }
 
         if (
-            true === $this->showCustomParam(Data::LC_CP_SHOW_TOTAL_ORDERS_COUNT) &&
+            true === $this->showCustomParam(self::LC_CP_SHOW_TOTAL_ORDERS_COUNT) &&
             null !== ($ordersCount = $this->getTotalOrdersCount())
         ) {
             $result[] = array('name' => 'Total orders count', 'value' => $ordersCount);
         }
 
         if (
-            true === $this->showCustomParam(Data::LC_CP_SHOW_LAST_ORDER_DETAILS) &&
+            true === $this->showCustomParam(self::LC_CP_SHOW_LAST_ORDER_DETAILS) &&
             null !== ($latOrderDetails = $this->getLastOrderDetails())
         ) {
             $result[] = array('name' => 'Last order details', 'value' => $latOrderDetails);
