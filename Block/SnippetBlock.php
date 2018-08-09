@@ -38,4 +38,21 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
 	{
 		return $this->dataHelper->getLicenseId();
 	}
+
+	/**
+	 * Checks if cart functions are set
+	 *
+	 * @return bool
+	 */
+	public function isCartSet()
+	{
+		if($this->dataHelper->showCustomParam(Data::LC_CP_SHOW_CART_PRODUCTS) ||
+		   $this->dataHelper->showCustomParam(Data::LC_CP_SHOW_TOTAL_CART_VALUE) ||
+		   $this->dataHelper->showCustomParam(Data::LC_CP_SHOW_TOTAL_ORDERS_COUNT) ||
+		   $this->dataHelper->showCustomParam(Data::LC_CP_SHOW_LAST_ORDER_DETAILS)) {
+			return true;
+		}
+		
+		return false;
+	}
 }

@@ -14,24 +14,27 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
   })(); 
 
-  var LC_API = LC_API || {};
-  LC_API.on_after_load = function() {
-    getCart();
-    setInterval(function(){
+  <?php if ($block->isCartSet()): ?>
+    var LC_API = LC_API || {};
+    LC_API.on_after_load = function() {
       getCart();
-    }, 30000);
-  }
+      setInterval(function(){
+        getCart();
+      }, 30000);
+    }
 
-  function getCart() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        LC_API.set_custom_variables(JSON.parse(this.responseText));
-      }
-    };
-    xhttp.open("GET", "<?php echo $block->getUrl('livechat/getcart'); ?>", true);
-    xhttp.send();
-  }
+    function getCart() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          LC_API.set_custom_variables(JSON.parse(this.responseText));
+        }
+      };
+      xhttp.open("GET", "<?php echo $block->getUrl('livechat/getcart'); ?>", true);
+      xhttp.send();
+    }
+
+  <?php endif; ?>
 </script>
 <?php else: ?>
   console.log('Please go to "Stores => Settings => Configuration" and configure your LiveChat account.');
