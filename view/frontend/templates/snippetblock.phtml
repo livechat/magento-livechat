@@ -1,29 +1,41 @@
-<script type="text/javascript">
-	<?php if (null !== $block->getLicenseId()): ?>
-		<!-- Start of LiveChat (www.livechatinc.com) code -->
-		window.__lc = window.__lc || {};
-		window.__lc.license = <?php echo $block->getLicenseId() ?>;
-		<?php if (!empty($block->getCustomerDetails())): ?>
-			__lc.visitor = {
-				<?php foreach ($block->getCustomerDetails() as $record): ?>
-					<?php echo $record['key']?>: "<?php echo $record['value'] ?>",
-				<?php endforeach ?>
-			};
-		<?php endif ?>
-		<?php if (!empty($block->getCustomVariables())): ?>
-			window.__lc.params = [
-				<?php foreach ($block->getCustomVariables() as $record): ?>
-					{ name: '<?php echo $record['name'] ?>', value: '<?php echo $record['value']?>'},
-				<?php endforeach ?>
-			];
-		<?php endif ?>
-		(function() {
-		  var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
-		  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
-		  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-		})();
-		<!-- End of LiveChat code -->
-	<?php else: ?>
-		console.log('Please go to "Stores => Settings => Configuration" and configure your LiveChat account.');
-	<?php endif; ?>
+<?php if (null !== $block->getLicenseId()): ?>
+<script src = "<?php echo $block->getUrl('livechat/getvisitor'); ?>"></script>
+<script>
+  window.__lc = window.__lc || {};
+  window.__lc.license = <?php echo $block->getLicenseId() ?>;
+
+  if(livechat_visitor_data) {
+    window.__lc.visitor = livechat_visitor_data;
+  }
+
+  (function() {
+    var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
+    lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
+  })(); 
+
+  <?php if ($block->isCartSet()): ?>
+    var LC_API = LC_API || {};
+    LC_API.on_after_load = function() {
+      getCart();
+      setInterval(function(){
+        getCart();
+      }, 30000);
+    }
+
+    function getCart() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          LC_API.set_custom_variables(JSON.parse(this.responseText));
+        }
+      };
+      xhttp.open("GET", "<?php echo $block->getUrl('livechat/getcart'); ?>", true);
+      xhttp.send();
+    }
+
+  <?php endif; ?>
 </script>
+<?php else: ?>
+  console.log('Please go to "Stores => Settings => Configuration" and configure your LiveChat account.');
+<?php endif; ?>
