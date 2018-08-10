@@ -18,9 +18,14 @@ class Index extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $visitor_data = 'var livechat_visitor_data = '.json_encode($this->getCustomerDetails());
-    
-        header('Content-type: application/javascript');
-        echo $visitor_data;    
+       
+        /** @var \Magento\Framework\App\ObjectManager $om */
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        /** @var     \Magento\Framework\App\ResponseInterface|\Magento\Framework\App\Response\Http $response */
+        $response = $om->get('Magento\Framework\App\ResponseInterface');
+        $response->setHeader('Content-type', 'application/javascript', $overwriteExisting = true);
+        $response->setBody($visitor_data); 
+        return $response;
     }
 
 	/**

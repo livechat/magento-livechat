@@ -45,9 +45,14 @@ class Index extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $custom_variables = json_encode($this->getCustomVariables());
-    
-        header('Content-type: application/json');
-        echo $custom_variables;    
+
+        /** @var \Magento\Framework\App\ObjectManager $om */
+        $om = \Magento\Framework\App\ObjectManager::getInstance();
+        /** @var     \Magento\Framework\App\ResponseInterface|\Magento\Framework\App\Response\Http $response */
+        $response = $om->get('Magento\Framework\App\ResponseInterface');
+        $response->setHeader('Content-type', 'application/json', $overwriteExisting = true);
+        $response->setBody($custom_variables); 
+        return $response;
     }
     
     /**
