@@ -37,7 +37,7 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_customerSession = $customerSession;
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->_scopeConfig = $scopeConfig;
-        $this->_urlinterface = $context->getUrlBuilder();
+        $this->_urlinterface = $context->getUrl();
         return parent::__construct($context);
     }
 
