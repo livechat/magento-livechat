@@ -28,7 +28,6 @@ class Index extends \Magento\Framework\App\Action\Action
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\View\Element\Template\Context $templateContext,
         \Magento\Checkout\Model\Cart $cart,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
@@ -38,7 +37,7 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_customerSession = $customerSession;
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->_scopeConfig = $scopeConfig;
-        $this->_urlinterface = $templateContext->getUrlBuilder();
+        $this->_urlinterface = $context->getUrlBuilder();
         return parent::__construct($context);
     }
 
