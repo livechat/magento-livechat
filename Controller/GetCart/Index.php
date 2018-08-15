@@ -20,17 +20,16 @@ class Index extends \Magento\Framework\App\Action\Action
 	 * @var ScopeConfigInterface
 	 */
     protected $_scopeConfig;
-    
+
 	/**
 	 * @var UrlInterface
 	 */
     protected $_urlinterface;
-    
+
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\View\Element\Template\Context $templateContext,
-        \Magento\Checkout\Model\Cart $cart, 
-        \Magento\Customer\Model\Session $customerSession, 
+        \Magento\Checkout\Model\Cart $cart,
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ){
@@ -38,9 +37,9 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_customerSession = $customerSession;
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->_scopeConfig = $scopeConfig;
-        $this->_urlinterface = $templateContext->getUrlBuilder();
+        $this->_urlinterface = $context->getUrl();
         return parent::__construct($context);
-    } 
+    }
 
     public function execute()
     {
@@ -51,10 +50,10 @@ class Index extends \Magento\Framework\App\Action\Action
         /** @var     \Magento\Framework\App\ResponseInterface|\Magento\Framework\App\Response\Http $response */
         $response = $om->get('Magento\Framework\App\ResponseInterface');
         $response->setHeader('Content-type', 'application/json', $overwriteExisting = true);
-        $response->setBody($custom_variables); 
+        $response->setBody($custom_variables);
         return $response;
     }
-    
+
     /**
      * Returns last order details.
      * @return string
