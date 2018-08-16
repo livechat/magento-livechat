@@ -21,14 +21,8 @@ class Index extends \Magento\Framework\App\Action\Action
 	 */
     protected $_scopeConfig;
     
-	/**
-	 * @var UrlInterface
-	 */
-    protected $_urlinterface;
-    
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\View\Element\Template\Context $templateContext,
         \Magento\Checkout\Model\Cart $cart, 
         \Magento\Customer\Model\Session $customerSession, 
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
@@ -38,7 +32,6 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_customerSession = $customerSession;
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->_scopeConfig = $scopeConfig;
-        $this->_urlinterface = $templateContext->getUrlBuilder();
         return parent::__construct($context);
     } 
 
@@ -161,11 +154,14 @@ class Index extends \Magento\Framework\App\Action\Action
      * @return array
      */
     public function getCustomVariables()
-    {
+    {   
+        $is_order_completed = $this->_request->getParam('success');
+
         $result = array();
-        if ($this->isOrderPlacedPage()) {
+        if($is_order_completed) {
             $result[] = array('name' => 'LC_ORDER_SUCCESS', 'value' => '1');
         }
+    
         if (
             true === $this->showCustomParam(Data::LC_CP_SHOW_CART_PRODUCTS) &&
             null !== ($productDetails = $this->getProductDetails())
@@ -195,20 +191,5 @@ class Index extends \Magento\Framework\App\Action\Action
         }
 
         return $result;
-    }
-
-    /**
-     * Checks if there is order success page.
-     * @return boolean
-     */
-    private function isOrderPlacedPage()
-    {
-        if (
-            'checkout/onepage/success/' === str_replace($this->_urlinterface->getBaseUrl(), '', $this->_urlinterface->getCurrentUrl())
-        ) {
-            return true;
-        }
-
-        return false;
     }
 }

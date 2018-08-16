@@ -55,4 +55,19 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
 		
 		return false;
 	}
+
+	/**
+	 * Checks if there is order success page.
+	 * @return boolean
+	 */
+	public function isOrderPlacedPage()
+	{
+		if (
+			'checkout/onepage/success/' === str_replace($this->getBaseUrl(), '', $this->urlinterface->getCurrentUrl())
+		) {
+			return 1;
+		}
+
+		return 0;
+	}
 }
