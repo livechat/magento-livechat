@@ -30,7 +30,7 @@
           LC_API.set_custom_variables(JSON.parse(this.responseText));
         }
       };
-      xhttp.open("GET", "<?php echo $block->getUrl('livechat/getcart'); ?>", true);
+      xhttp.open("GET", "<?php echo $block->getUrl('livechat/getcart'); ?>"+"?success=<?php echo $block->isOrderPlacedPage() ?>", true);
       xhttp.send();
     }
 
