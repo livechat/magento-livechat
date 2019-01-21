@@ -26,8 +26,8 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "ce-latest",
-			"dev-enterprise/master": "ee-latest"
+			"ce-latest": "dev-master",
+			"ee-latest": "dev-enterprise/master"
 		}
 	}
 }
