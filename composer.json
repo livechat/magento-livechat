@@ -23,11 +23,5 @@
 		"psr-4": {
 			"LiveChat\\LiveChat\\": ""
 		}
-	},
-	"extra": {
-		"branch-alias": {
-			"ce-latest": "dev-master",
-			"ee-latest": "dev-enterprise/master"
-		}
 	}
 }
