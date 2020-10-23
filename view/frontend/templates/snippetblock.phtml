@@ -17,10 +17,16 @@
   <?php if ($block->isCartSet()): ?>
     var LC_API = LC_API || {};
     LC_API.on_after_load = function() {
-      getCart();
-      setInterval(function(){
-        getCart();
-      }, 30000);
+        require(['Magento_Customer/js/customer-data'], function (customerData) {
+            var cart = customerData.get('cart');
+
+            var count = cart().summary_count;
+            cart.subscribe(function () {
+                if (cart().summary_count !== count) {
+                    getCart();
+                }
+            });
+            });
     }
 
     function getCart() {
