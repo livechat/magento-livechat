@@ -19,14 +19,26 @@
     LC_API.on_after_load = function() {
         require(['Magento_Customer/js/customer-data'], function (customerData) {
             var cart = customerData.get('cart');
+            var count = cart().summary_count;
+
+            if(localStorage) {
+              var storageCount = localStorage.getItem('lcCount');
+              if(parseInt(storageCount) !== count) {
+                getCart();
+              }
+              localStorage.setItem('lcCount', count);
+            }
 
             var count = cart().summary_count;
             cart.subscribe(function () {
                 if (cart().summary_count !== count) {
                     getCart();
+                    if(localStorage) {
+                      localStorage.setItem('lcCount', cart().summary_count);
+                    }
                 }
             });
-            });
+        });
     }
 
     function getCart() {
