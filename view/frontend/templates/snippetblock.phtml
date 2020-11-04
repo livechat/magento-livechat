@@ -47,7 +47,7 @@
             var customVariables = JSON.parse(this.responseText);
 
             if (customVariables.length <= 0) {
-                customVariables = [{"name":"Cart", "value":"Customer's cart is empty"}];
+                customVariables = [{"name":"Cart", "value":"customer's cart is empty"}];
             }
 
             LC_API.set_custom_variables(customVariables);
