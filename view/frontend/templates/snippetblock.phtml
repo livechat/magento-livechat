@@ -3,7 +3,6 @@
 <script>
   window.__lc = window.__lc || {};
   window.__lc.license = <?php echo $block->getLicenseId() ?>;
-
   if(livechat_visitor_data) {
     window.__lc.visitor = livechat_visitor_data;
   }
@@ -12,7 +11,7 @@
     var lc = document.createElement('script'); lc.type = 'text/javascript'; lc.async = true;
     lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(lc, s);
-  })(); 
+  })();
 
   <?php if ($block->isCartSet()): ?>
     var LC_API = LC_API || {};
@@ -45,7 +44,13 @@
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-          LC_API.set_custom_variables(JSON.parse(this.responseText));
+            var customVariables = JSON.parse(this.responseText);
+
+            if (customVariables.length <= 0) {
+                customVariables = [{"name":"Cart", "value":"Customer's cart is empty"}];
+            }
+
+            LC_API.set_custom_variables(customVariables);
         }
       };
       xhttp.open("GET", "<?php echo $block->getUrl('livechat/getcart'); ?>"+"?success=<?php echo $block->isOrderPlacedPage() ?>", true);
