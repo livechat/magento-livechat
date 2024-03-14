@@ -9,6 +9,10 @@ class Index extends \Magento\Backend\App\Action
 	protected $configWriter;
 	
 	private $cacheManagerFactory;
+	/**
+	 * @var \Magento\Framework\Controller\Result\JsonFactory
+	 */
+	private $resultJsonFactory;
 
 	public function __construct(
 		Context $context,

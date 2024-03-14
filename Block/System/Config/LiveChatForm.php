@@ -11,6 +11,7 @@ class LiveChatForm extends \Magento\Framework\View\Element\Template
 	const CHECK_TEMPLATE = 'system/config/livechat_form.phtml';
 	
 	private $dataHelper;
+	private $urlinterface;
 
 	public function __construct(
 		\Magento\Framework\View\Element\Template\Context $context,

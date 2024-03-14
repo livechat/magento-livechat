@@ -1,5 +1,6 @@
 require(['jquery'], function ($) {
-	
+
+	var addonsOrigin = 'https://addons.livechatinc.com';
 	var save_props_url = $('#save-props-url').html();
 	var save_license_url = $('#save-license-url').html();
 	var reset_license_url = $('#reset-license-url').html();
@@ -57,7 +58,7 @@ require(['jquery'], function ($) {
 	});
 
 	var sendMessage = function (msg) {
-		login_with_livechat.contentWindow.postMessage(msg, '*');
+		login_with_livechat.contentWindow.postMessage(msg, addonsOrigin);
 	};
 
 	var logoutLiveChat = function () {
@@ -65,15 +66,21 @@ require(['jquery'], function ($) {
 	};
 
 	function receiveMessage(event) {
+		if (event.origin !== addonsOrigin) {
+			return;
+		}
+
+		var livechatMessage;
+
 		try {
-			var livechatMessage = JSON.parse(event.data);
+			livechatMessage = JSON.parse(event.data);
 		}
 		catch(err) {
+			console.log(err?.message);
 			console.log(JSON.stringify(err));
 		}
 		
-		if (livechatMessage.type === 'logged-in' && livechatMessage.eventTrigger === 'click') {
-
+		if (livechatMessage?.type === 'logged-in' && livechatMessage?.eventTrigger === 'click') {
 			$('#login_panel').hide();
 			$('#admin_panel').show();
 			$('iframe#login-with-livechat').addClass('hidden');
