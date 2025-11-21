@@ -5,26 +5,26 @@ use \LiveChat\LiveChat\Helper\Data;
 class Index extends \Magento\Framework\App\Action\Action
 {
 	/**
-	 * @var Cart
+	 * @var \Magento\Checkout\Model\Cart
 	 */
 	protected $_cart;
 	/**
-	 * @var Session
+	 * @var \Magento\Customer\Model\Session
 	 */
 	protected $_customerSession;
 	/**
-	 * @var CollectionFactory
+	 * @var \Magento\Sales\Model\ResourceModel\Order\CollectionFactory
 	 */
 	protected $_orderCollectionFactory;
 	/**
-	 * @var ScopeConfigInterface
+	 * @var \Magento\Framework\App\Config\ScopeConfigInterface
 	 */
     protected $_scopeConfig;
-    
+
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Checkout\Model\Cart $cart, 
-        \Magento\Customer\Model\Session $customerSession, 
+        \Magento\Checkout\Model\Cart $cart,
+        \Magento\Customer\Model\Session $customerSession,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     ){
@@ -33,7 +33,7 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_orderCollectionFactory = $orderCollectionFactory;
         $this->_scopeConfig = $scopeConfig;
         return parent::__construct($context);
-    } 
+    }
 
     public function execute()
     {
@@ -44,10 +44,10 @@ class Index extends \Magento\Framework\App\Action\Action
         /** @var     \Magento\Framework\App\ResponseInterface|\Magento\Framework\App\Response\Http $response */
         $response = $om->get('Magento\Framework\App\ResponseInterface');
         $response->setHeader('Content-type', 'application/json', $overwriteExisting = true);
-        $response->setBody($custom_variables); 
+        $response->setBody($custom_variables);
         return $response;
     }
-    
+
     /**
      * Returns last order details.
      * @return string
@@ -61,7 +61,7 @@ class Index extends \Magento\Framework\App\Action\Action
         $orderRecord = $this->_orderCollectionFactory->create()->addFieldToFilter('customer_id', $customerId)
             ->addOrder('created_at', 'DESC')->fetchItem();
 
-        if (!($orderRecord instanceof Order)) {
+        if (!($orderRecord instanceof \Magento\Sales\Model\Order)) {
             return null;
         }
 
@@ -137,11 +137,11 @@ class Index extends \Magento\Framework\App\Action\Action
     {
         $cartData = $this->_cart->getQuote()->getData();
 
-        if (!array_key_exists('items_count', $cartData) || 0 >= (int) $cartData['items_count']) {
+        if (!\array_key_exists('items_count', $cartData) || 0 >= (int) $cartData['items_count']) {
             return null;
         }
 
-        if (array_key_exists('base_grand_total', $cartData)) {
+        if (\array_key_exists('base_grand_total', $cartData)) {
             return number_format(round($cartData['base_grand_total'], 2), 2) . ' ' . $cartData['quote_currency_code'];
         }
 
@@ -154,14 +154,14 @@ class Index extends \Magento\Framework\App\Action\Action
      * @return array
      */
     public function getCustomVariables()
-    {   
+    {
         $is_order_completed = $this->_request->getParam('success');
 
         $result = array();
         if($is_order_completed) {
             $result[] = array('name' => 'LC_ORDER_SUCCESS', 'value' => '1');
         }
-    
+
         if (
             true === $this->showCustomParam(Data::LC_CP_SHOW_CART_PRODUCTS) &&
             null !== ($productDetails = $this->getProductDetails())
