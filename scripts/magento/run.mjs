@@ -10,9 +10,10 @@ const {
 	port: portArg,
 	dbPort: dbPortArg,
 	"rebuild-image": rebuildImage,
+	artifact,
 } = minimist(process.argv.slice(2), {
 	string: ["php", "magento", "port", "dbPort"],
-	boolean: ["rebuild-image"],
+	boolean: ["rebuild-image", "artifact"],
 });
 
 const parse = (v) => v.split(".").map((n) => parseInt(n, 10) || 0);
@@ -62,9 +63,16 @@ const opensearchImage =
 		? "opensearchproject/opensearch:2.19.1"
 		: "opensearchproject/opensearch:2.5.0";
 
+// With --artifact the built module (dist/) is mounted instead of the plugin/ sources
+const artifactDir = "./dist/livechat-magento";
+if (artifact && !fs.existsSync(artifactDir)) {
+	throw new Error(`Artifact not found at ${artifactDir}. Run: npm run build`);
+}
+const moduleDir = artifact ? "../../dist/livechat-magento" : "../../plugin";
+
 const admin = { user: "admin", password: "Admin123!", email: "admin@admin.com" };
 
-echo`Preparing the Magento instance for\n* PHP version: ${phpVersion}\n* Magento version: ${magentoVersion}\n* OpenSearch: ${opensearchImage}\n* Port: ${port}\n* Docker project: ${p}\n`;
+echo`Preparing the Magento instance for\n* PHP version: ${phpVersion}\n* Magento version: ${magentoVersion}\n* OpenSearch: ${opensearchImage}\n* Module: ${artifact ? "built artifact" : "plugin/ sources"}\n* Port: ${port}\n* Docker project: ${p}\n`;
 
 fs.appendFileSync("./scripts/magento/.projects", p + "\n");
 
@@ -82,6 +90,7 @@ const $$ = $({
 		DB_PORT: dbPort,
 		PHP_VERSION: phpVersion,
 		MAGENTO_VERSION: magentoVersion,
+		MODULE_DIR: moduleDir,
 		OPENSEARCH_IMAGE: opensearchImage,
 		COMPOSER_AUTH: composerAuth,
 	},

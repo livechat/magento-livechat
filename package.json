@@ -12,7 +12,10 @@
         "composer": "zx ./scripts/php/composer.mjs",
         "test": "zx ./scripts/php/composer.mjs test",
         "phpcs": "zx ./scripts/php/composer.mjs static-analysis",
-        "phpcbf": "zx ./scripts/php/composer.mjs fix-static-analysis"
+        "phpcbf": "zx ./scripts/php/composer.mjs fix-static-analysis",
+        "build": "zx ./scripts/build/prepare-plugins.mjs",
+        "magento-latest:artifact": "zx ./scripts/magento/run.mjs --php $npm_package_config_php_latest_ver --magento $npm_package_config_magento_latest_ver --artifact",
+        "magento-minimum:artifact": "zx ./scripts/magento/run.mjs --php $npm_package_config_php_minimum_ver --magento $npm_package_config_magento_minimum_ver --artifact"
     },
     "license": "ISC",
     "dependencies": {
