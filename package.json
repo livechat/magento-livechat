@@ -5,6 +5,10 @@
     "private": true,
     "scripts": {
         "prepare": "husky",
+        "run-env": "zx ./scripts/magento/run.mjs",
+        "magento-minimum": "zx ./scripts/magento/run.mjs --php $npm_package_config_php_minimum_ver --magento $npm_package_config_magento_minimum_ver",
+        "magento-latest": "zx ./scripts/magento/run.mjs --php $npm_package_config_php_latest_ver --magento $npm_package_config_magento_latest_ver",
+        "cleanup": "zx ./scripts/magento/cleanup.mjs",
         "composer": "zx ./scripts/php/composer.mjs"
     },
     "license": "ISC",
