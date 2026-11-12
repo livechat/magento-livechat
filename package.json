@@ -4,7 +4,8 @@
     "description": "Magento 2 module for LiveChat",
     "private": true,
     "scripts": {
-        "prepare": "husky"
+        "prepare": "husky",
+        "composer": "zx ./scripts/php/composer.mjs"
     },
     "license": "ISC",
     "dependencies": {

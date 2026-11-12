@@ -1,0 +1,11 @@
+services:
+  php:
+    build:
+      context: ../../
+      dockerfile: ./scripts/php/Dockerfile
+      args:
+        phpVersion: ${PHP_VERSION:-8.1}
+
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    volumes:
+      - ../../plugin:/home/www-data
