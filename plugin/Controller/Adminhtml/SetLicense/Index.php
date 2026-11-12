@@ -5,7 +5,13 @@ use Magento\Backend\App\Action\Context;
 
 class Index extends \Magento\Backend\App\Action
 {
+	/**
+	 * @var \Magento\Framework\View\Result\PageFactory
+	 */
 	protected $resultPageFactory;
+	/**
+	 * @var \Magento\Framework\App\Config\Storage\WriterInterface
+	 */
 	protected $configWriter;
 	/**
 	 * @var \Magento\Framework\Controller\Result\JsonFactory
@@ -16,6 +22,12 @@ class Index extends \Magento\Backend\App\Action
 	 */
 	private $cacheManagerFactory;
 
+	/**
+	 * @param Context $context
+	 * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+	 * @param \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
+	 * @param \Magento\Framework\App\Cache\ManagerFactory $cacheManagerFactory
+	 */
 	public function __construct(
 		Context $context,
 		\Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
@@ -28,12 +40,23 @@ class Index extends \Magento\Backend\App\Action
 		$this->cacheManagerFactory = $cacheManagerFactory;
 	}
 	
-	private function clearCache() {
-	  $cacheManager = $this->cacheManagerFactory->create();
-	  $types = $cacheManager->getAvailableTypes();
-	  $cacheManager->clean($types);
+	/**
+	 * Cleans all cache types.
+	 *
+	 * @return void
+	 */
+	private function clearCache()
+	{
+		$cacheManager = $this->cacheManagerFactory->create();
+		$types = $cacheManager->getAvailableTypes();
+		$cacheManager->clean($types);
 	}
 
+	/**
+	 * Saves the LiveChat license and enables all custom params.
+	 *
+	 * @return \Magento\Framework\Controller\Result\Json
+	 */
 	public function execute()
 	{
 		$post = $this->getRequest()->getPostValue();

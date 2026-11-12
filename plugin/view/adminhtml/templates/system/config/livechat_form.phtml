@@ -10,7 +10,7 @@
     <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
         <div style="display: flex; flex-direction: row; align-items: center;">
             <img
-                src='<?= $block->escapeUrl(
+                src='<?= $escaper->escapeUrl(
                     $block->getViewFileUrl('LiveChat_LiveChat::img/livechat-magento@2x.png')
                 ) ?>'
                 alt="Demo"
@@ -45,7 +45,7 @@
                     Your LiveChat is now ready!
                 </a>
                 <img
-                    src='<?= $block->escapeUrl(
+                    src='<?= $escaper->escapeUrl(
                         $block->getViewFileUrl('LiveChat_LiveChat::img/livechat.png')
                     ) ?>'
                     alt="livechat_logo"
@@ -55,7 +55,7 @@
             <div>
                 You are now rocking chat window from your
                 <span id="livechat_login" style="font-weight: bold;">
-                    <?= $block->escapeHtml($block->getLicenseEmail()) ?>
+                    <?= $escaper->escapeHtml($block->getLicenseEmail()) ?>
                 </span>
                 account.
             </div>
@@ -255,8 +255,8 @@
         </div>
     </div>
 </div>
-<div id="save-props-url" hidden><?= $block->escapeUrl($block->getUrl('livechat/setprops')) ?></div>
-<div id="save-license-url" hidden><?= $block->escapeUrl($block->getUrl('livechat/setlicense')) ?></div>
-<div id="reset-license-url" hidden><?= $block->escapeUrl($block->getUrl('livechat/resetlicense')) ?></div>
-<div id="get-props-url" hidden><?= $block->escapeUrl($block->getUrl('livechat/getprops')) ?></div>
+<div id="save-props-url" hidden><?= $escaper->escapeUrl($block->getUrl('livechat/setprops')) ?></div>
+<div id="save-license-url" hidden><?= $escaper->escapeUrl($block->getUrl('livechat/setlicense')) ?></div>
+<div id="reset-license-url" hidden><?= $escaper->escapeUrl($block->getUrl('livechat/resetlicense')) ?></div>
+<div id="get-props-url" hidden><?= $escaper->escapeUrl($block->getUrl('livechat/getprops')) ?></div>
 <div id="licenseId" hidden><?= (int)$block->getLicenseId() ?></div>

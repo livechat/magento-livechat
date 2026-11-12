@@ -4,7 +4,7 @@
  */
 ?>
 <?php if (null !== $block->getLicenseId()): ?>
-<script src="<?= $block->escapeUrl($block->getUrl('livechat/getvisitor')) ?>"></script>
+<script src="<?= $escaper->escapeUrl($block->getUrl('livechat/getvisitor')) ?>"></script>
 <script>
   window.__lc = window.__lc || {};
   window.__lc.integration_name = "magento";
@@ -40,7 +40,7 @@
       },
       init:function(){
         var n=t.createElement("script");
-        n.async=!0,n.type="text/javascript",
+        n.async=!0,
         n.src="https://cdn.livechatinc.com/tracking.js",
         t.head.appendChild(n)
       }
@@ -90,8 +90,8 @@
       };
       xhttp.open(
         "GET",
-        "<?= $block->escapeUrl($block->getUrl('livechat/getcart')) ?>" +
-        "?success=<?= $block->escapeUrl($block->isOrderPlacedPage()) ?>",
+        "<?= $escaper->escapeUrl($block->getUrl('livechat/getcart')) ?>" +
+        "?success=<?= $escaper->escapeUrl($block->isOrderPlacedPage()) ?>",
         true
       );
       xhttp.send();

@@ -9,10 +9,10 @@
 	<arg name="colors"/>
 	<arg value="p"/>
 
-	<!-- Warnings are reported but do not fail the run; errors do. -->
-	<config name="ignore_warnings_on_exit" value="1"/>
+	<config name="testVersion" value="8.1-"/>
 
 	<rule ref="Magento2"/>
+	<rule ref="PHPCompatibility"/>
 
 	<!-- The module and .editorconfig use tab indentation; Magento2 expects spaces. -->
 	<rule ref="Generic.WhiteSpace.DisallowTabIndent">
@@ -23,5 +23,11 @@
 	</rule>
 	<rule ref="Squiz.Functions.MultiLineFunctionDeclaration.Indent">
 		<severity>0</severity>
+	</rule>
+
+	<!-- Templates and XML schema headers contain long URLs that cannot be wrapped. -->
+	<rule ref="Generic.Files.LineLength">
+		<exclude-pattern>*.phtml</exclude-pattern>
+		<exclude-pattern>*.xml</exclude-pattern>
 	</rule>
 </ruleset>
