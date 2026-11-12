@@ -15,7 +15,7 @@
         "php_latest_ver": "8.4",
         "php_minimum_ver": "8.1",
         "magento_latest_ver": "2.4.8",
-        "magento_minimum_ver": "2.4.4"
+        "magento_minimum_ver": "2.4.6"
     },
     "devDependencies": {
         "husky": "^9.1.7"
