@@ -1,0 +1,21 @@
+dist
+scripts/magento/.projects
+
+# secrets
+.env
+
+# javascript
+node_modules
+
+# composer
+vendor
+.composer
+
+# phpunit
+.phpunit.result.cache
+
+# IDE
+.idea
+
+# misc
+.DS_Store

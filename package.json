@@ -1,0 +1,22 @@
+{
+    "name": "magento-livechat-plugin",
+    "version": "1.0.0",
+    "description": "Magento 2 module for LiveChat",
+    "private": true,
+    "scripts": {
+        "prepare": "husky"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "zx": "^8.8.5"
+    },
+    "config": {
+        "php_latest_ver": "8.4",
+        "php_minimum_ver": "8.1",
+        "magento_latest_ver": "2.4.8",
+        "magento_minimum_ver": "2.4.4"
+    },
+    "devDependencies": {
+        "husky": "^9.1.7"
+    }
+}
