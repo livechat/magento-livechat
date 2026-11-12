@@ -12,6 +12,6 @@ await $({
 		DOCKER_UID: process.env.DOCKER_UID ?? process.getuid(),
 		DOCKER_GID: process.env.DOCKER_GID ?? process.getgid(),
 	},
-})`docker compose -f ./scripts/php/docker-compose.yml run --rm --remove-orphans php composer ${args}`.pipe(
+})`docker compose -f ./scripts/php/docker-compose.yml run --rm --remove-orphans php composer --working-dir=dev ${args}`.pipe(
 	process.stdout,
 );

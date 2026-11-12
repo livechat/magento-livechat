@@ -1,0 +1,13 @@
+<phpunit
+	bootstrap="vendor/autoload.php"
+	colors="true"
+	cacheDirectory=".phpunit.cache"
+	failOnWarning="true"
+	failOnRisky="true"
+>
+	<testsuites>
+		<testsuite name="unit">
+			<directory suffix="Test.php">../plugin/Test/Unit</directory>
+		</testsuite>
+	</testsuites>
+</phpunit>

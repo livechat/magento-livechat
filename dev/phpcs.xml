@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<ruleset name="LiveChat Magento module">
+	<description>Magento 2 coding standard for the LiveChat module.</description>
+
+	<file>../plugin</file>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<arg name="extensions" value="php,phtml"/>
+	<arg name="colors"/>
+	<arg value="p"/>
+
+	<!-- Warnings are reported but do not fail the run; errors do. -->
+	<config name="ignore_warnings_on_exit" value="1"/>
+
+	<rule ref="Magento2"/>
+
+	<!-- The module and .editorconfig use tab indentation; Magento2 expects spaces. -->
+	<rule ref="Generic.WhiteSpace.DisallowTabIndent">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<severity>0</severity>
+	</rule>
+	<rule ref="Squiz.Functions.MultiLineFunctionDeclaration.Indent">
+		<severity>0</severity>
+	</rule>
+</ruleset>
