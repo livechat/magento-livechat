@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests
+    runs-on: docker-image-builder
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - name: Verify Docker is available
+        run: |
+          echo "Checking Docker availability..."
+          docker --version
+          docker compose version
+          echo "Docker is available — OK"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Set up Aikido Safe Chain
+        uses: livechat/github-actions-global/.github/actions/safe-chain-install@master
+      - name: Install Node.js dependencies
+        run: |
+          echo "Installing Node.js dependencies..."
+          npm ci
+          echo "Dependencies installed — OK"
+
+      - name: Install Composer dependencies
+        run: |
+          echo "Installing Composer dependencies..."
+          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
+          npm run composer -- install
+          echo "Composer dependencies installed — OK"
+
+      - name: Run PHP unit tests
+        run: |
+          echo "Running PHPUnit tests (npm run test)..."
+          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
+          npm run test
+          echo "Tests passed — OK"
+
+  phpcs:
+    name: PHPCS
+    runs-on: docker-image-builder
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - name: Verify Docker is available
+        run: |
+          echo "Checking Docker availability..."
+          docker --version
+          docker compose version
+          echo "Docker is available — OK"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Set up Aikido Safe Chain
+        uses: livechat/github-actions-global/.github/actions/safe-chain-install@master
+      - name: Install Node.js dependencies
+        run: |
+          echo "Installing Node.js dependencies..."
+          npm ci
+          echo "Dependencies installed — OK"
+
+      - name: Install Composer dependencies
+        run: |
+          echo "Installing Composer dependencies..."
+          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
+          npm run composer -- install
+          echo "Composer dependencies installed — OK"
+
+      - name: Run PHPCS
+        run: |
+          echo "Running PHP_CodeSniffer static analysis (npm run phpcs)..."
+          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
+          npm run phpcs
+          echo "No code style violations found — OK"
