@@ -1,0 +1,73 @@
+# Required env (set by run.mjs): MAGENTO_PORT, DB_PORT, PHP_VERSION, MAGENTO_VERSION, OPENSEARCH_IMAGE, COMPOSER_AUTH
+# Optional: MODULE_DIR (module source mounted into app/code, default ../../plugin)
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: magento
+      args:
+        phpVersion: ${PHP_VERSION:-8.4}
+        magentoVersion: ${MAGENTO_VERSION:-2.4.8}
+      secrets:
+        - composer_auth
+    image: livechat-magento:${MAGENTO_VERSION:-2.4.8}-php${PHP_VERSION:-8.4}
+    volumes:
+      - magento:/var/www/html
+      - ${MODULE_DIR:-../../plugin}:/var/www/html/app/code/LiveChat/LiveChat
+    depends_on:
+      db:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+
+  web:
+    image: nginx:1.27-alpine
+    ports:
+      - ${MAGENTO_PORT:-8080}:80
+    volumes:
+      - magento:/var/www/html:ro
+      - ${MODULE_DIR:-../../plugin}:/var/www/html/app/code/LiveChat/LiveChat:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+
+  db:
+    image: mysql:8.0
+    ports:
+      - ${DB_PORT:-3307}:3306
+    environment:
+      MYSQL_DATABASE: magento
+      MYSQL_ROOT_PASSWORD: root
+    command: ["mysqld", "--log-bin-trust-function-creators=1"]
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-proot"]
+      interval: 3s
+      timeout: 3s
+      retries: 60
+
+  opensearch:
+    image: ${OPENSEARCH_IMAGE:-opensearchproject/opensearch:2.19.1}
+    environment:
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: "true"
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+    volumes:
+      - opensearch:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9200/_cluster/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
+
+volumes:
+  magento:
+  db:
+  opensearch:
+
+secrets:
+  composer_auth:
+    environment: COMPOSER_AUTH

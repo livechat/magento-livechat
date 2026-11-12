@@ -1,0 +1,14 @@
+# Paths (relative to the module root) excluded from the build artifact.
+# A leading "**/" matches the basename anywhere in the tree.
+
+# Tests
+Test/
+
+# Composer dependencies (the module is installed through Composer/Marketplace)
+vendor/
+
+# Build artifact marker
+.pluginignore
+
+# OS
+**/.DS_Store
