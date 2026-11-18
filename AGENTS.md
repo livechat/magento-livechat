@@ -35,7 +35,7 @@ The first run per Magento/PHP version builds a ~2 GB image (downloads Magento); 
 ### Testing & static analysis
 ```bash
 pnpm test      # PHPUnit (plugin/Test/Unit), runs in Docker
-pnpm test:magento  # tests under plugin/Test/Unit/Controller need real Magento classes: run inside the latest running env
+pnpm test:magento  # tests under plugin/Test/Unit/Controller need real Magento classes: run inside the latest running env (CI job "Magento unit tests" does this on the minimum versions; needs COMMERCE_PUBLIC_KEY / COMMERCE_PRIVATE_KEY secrets)
 pnpm phpcs     # Magento2 coding standard; errors fail, warnings are informational
 pnpm phpcbf    # auto-fix (rewrites source — review the diff)
 ```

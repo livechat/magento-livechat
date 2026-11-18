@@ -63,6 +63,9 @@ const opensearchImage =
 		? "opensearchproject/opensearch:2.19.7"
 		: "opensearchproject/opensearch:2.5.0";
 
+// Magento < 2.4.8 only supports MySQL 8.0
+const dbImage = compare(magentoVersion, "2.4.8") >= 0 ? "mysql:8" : "mysql:8.0";
+
 // With --artifact the built module (dist/) is mounted instead of the plugin/ sources
 const artifactDir = "./dist/livechat-magento";
 if (artifact && !fs.existsSync(artifactDir)) {
@@ -93,6 +96,7 @@ const $$ = $({
 		MAGENTO_VERSION: magentoVersion,
 		MODULE_DIR: moduleDir,
 		OPENSEARCH_IMAGE: opensearchImage,
+		DB_IMAGE: dbImage,
 		COMPOSER_AUTH: composerAuth,
 	},
 });

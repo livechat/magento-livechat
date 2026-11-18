@@ -95,3 +95,52 @@ jobs:
           export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
           pnpm phpcs
           echo "No code style violations found — OK"
+
+  magento-tests:
+    name: Magento unit tests
+    runs-on: docker-image-builder
+    env:
+      COMMERCE_PUBLIC_KEY: ${{ secrets.COMMERCE_PUBLIC_KEY }}
+      COMMERCE_PRIVATE_KEY: ${{ secrets.COMMERCE_PRIVATE_KEY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - name: Verify Docker is available
+        run: |
+          echo "Checking Docker availability..."
+          docker --version
+          docker compose version
+          echo "Docker is available — OK"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+
+      - name: Set up Aikido Safe Chain
+        uses: livechat/github-actions-global/.github/actions/safe-chain-install@a8c2f1fc2778624c05400006a87e26dff8bd1c7e # master
+      - name: Install Node.js dependencies
+        run: |
+          echo "Installing Node.js dependencies..."
+          pnpm install --frozen-lockfile
+          echo "Dependencies installed — OK"
+
+      - name: Bootstrap Magento (minimum supported versions)
+        run: |
+          echo "Bootstrapping Magento (pnpm magento-minimum)..."
+          pnpm magento-minimum
+          echo "Magento ready — OK"
+
+      - name: Run Magento-dependent unit tests
+        run: |
+          echo "Running tests inside Magento (pnpm test:magento)..."
+          pnpm test:magento
+          echo "Tests passed — OK"
+
+      - name: Remove Magento environment
+        if: always()
+        run: pnpm cleanup
