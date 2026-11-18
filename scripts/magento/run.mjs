@@ -96,8 +96,9 @@ const $$ = $({
 	},
 });
 
+// Numeric www-data uid:gid, because some runtimes (e.g. Kiri) fail to resolve the user name in compose exec
 const exec = (...cmd) =>
-	$$`docker compose -f ${f} -p ${p} exec -T php ${cmd}`;
+	$$`docker compose -f ${f} -p ${p} exec -T -u 33:33 php ${cmd}`;
 const magento = (...args) => exec("php", "-d", "memory_limit=-1", "bin/magento", ...args);
 
 /** ----- MAGENTO IMAGE (built once per Magento + PHP version, reused afterwards) ----- */
