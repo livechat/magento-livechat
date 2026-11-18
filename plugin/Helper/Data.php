@@ -43,6 +43,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 	 */
 	public function showCustomParam($key)
 	{
-		return (boolean) $this->scopeConfig->getValue($key, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+		return '1' === (string) $this->scopeConfig->getValue($key, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
 	}
 }

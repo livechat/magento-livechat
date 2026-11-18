@@ -6,6 +6,11 @@ use Magento\Backend\App\Action\Context;
 class Index extends \Magento\Backend\App\Action
 {
 	/**
+	 * ACL resource required to call this action.
+	 */
+	public const ADMIN_RESOURCE = 'LiveChat_LiveChat::mymodule';
+
+	/**
 	 * @var \Magento\Framework\View\Result\PageFactory
 	 */
 	protected $resultPageFactory;
