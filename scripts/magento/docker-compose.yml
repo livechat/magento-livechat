@@ -3,7 +3,7 @@
 services:
   # Copies the Magento tree baked into the image into the shared volume (not every runtime seeds volumes from the image)
   seed:
-    image: livechat-magento:${MAGENTO_VERSION:-2.4.8}-php${PHP_VERSION:-8.4}
+    image: livechat-magento:${MAGENTO_VERSION:-2.4.9}-php${PHP_VERSION:-8.5.12}
     user: root
     entrypoint: ["sh", "-c", "[ -f /seed/bin/magento ] || cp -a /var/www/html/. /seed/"]
     volumes:
@@ -16,11 +16,11 @@ services:
       dockerfile: ./Dockerfile
       target: magento
       args:
-        phpVersion: ${PHP_VERSION:-8.4}
-        magentoVersion: ${MAGENTO_VERSION:-2.4.8}
+        phpVersion: ${PHP_VERSION:-8.5.12}
+        magentoVersion: ${MAGENTO_VERSION:-2.4.9}
       secrets:
         - composer_auth
-    image: livechat-magento:${MAGENTO_VERSION:-2.4.8}-php${PHP_VERSION:-8.4}
+    image: livechat-magento:${MAGENTO_VERSION:-2.4.9}-php${PHP_VERSION:-8.5.12}
     volumes:
       - magento:/var/www/html
       - ${MODULE_DIR:-../../plugin}:/var/www/html/app/code/LiveChat/LiveChat
@@ -33,7 +33,7 @@ services:
         condition: service_healthy
 
   web:
-    image: nginx:1.27-alpine
+    image: nginx:1.31.8-alpine3.24
     ports:
       - ${MAGENTO_PORT:-8080}:80
     volumes:
@@ -44,7 +44,7 @@ services:
       - php
 
   db:
-    image: mysql:8.0
+    image: mysql:8
     ports:
       - ${DB_PORT:-3307}:3306
     environment:
@@ -60,7 +60,7 @@ services:
       retries: 60
 
   opensearch:
-    image: ${OPENSEARCH_IMAGE:-opensearchproject/opensearch:2.19.1}
+    image: ${OPENSEARCH_IMAGE:-opensearchproject/opensearch:2.19.7}
     environment:
       discovery.type: single-node
       DISABLE_SECURITY_PLUGIN: "true"

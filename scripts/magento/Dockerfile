@@ -1,10 +1,10 @@
-ARG phpVersion=8.4
+ARG phpVersion=8.5.12
 FROM php:${phpVersion}-fpm AS base
 
 USER root
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends git unzip default-mysql-client \
+	&& apt-get install -y --no-install-recommends ca-certificates curl git unzip default-mysql-client \
 	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/mlocati/php-extension-installer:latest /usr/bin/install-php-extensions /usr/local/bin/

@@ -1,5 +1,3 @@
-# Based on: WooCommerce (https://github.com/woocommerce/woocommerce/blob/trunk/.editorconfig)
-
 root = true
 
 [*]

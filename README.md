@@ -26,8 +26,8 @@ This module adds [LiveChat](https://www.livechatinc.com/) to your Magento 2 site
 Docker-based dev environment, tests and build (see [AGENTS.md](AGENTS.md) for details):
 
 * `cp .env.example .env` and fill in your repo.magento.com keys
-* `npm install`
-* `npm run magento-latest` - bootstrap Magento 2.4.8 with the module (`magento-minimum` for 2.4.6)
-* `npm run test` / `npm run phpcs` - PHPUnit and coding standard checks
-* `npm run build` - build the artifact into `dist/`
-* `npm run cleanup` - remove environments
+* `pnpm install`
+* `pnpm magento-latest` - bootstrap Magento 2.4.9 with the module (`magento-minimum` for 2.4.6)
+* `pnpm test` / `pnpm phpcs` - PHPUnit and coding standard checks
+* `pnpm build` - build the artifact into `dist/`
+* `pnpm cleanup` - remove environments

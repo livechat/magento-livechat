@@ -57,19 +57,20 @@ const port = portArg ?? Math.floor(Math.random() * (8190 - 8090 + 1)) + 8090;
 const dbPort = dbPortArg ?? Math.floor(Math.random() * (8390 - 8290 + 1)) + 8290;
 const p = `magento_${crypto.randomBytes(3).toString("hex").slice(0, 5)}`;
 const f = "./scripts/magento/docker-compose.yml";
-// Magento < 2.4.8 does not support OpenSearch 2.19
+// Magento < 2.4.8 does not support OpenSearch 2
 const opensearchImage =
 	compare(magentoVersion, "2.4.8") >= 0
-		? "opensearchproject/opensearch:2.19.1"
+		? "opensearchproject/opensearch:2.19.7"
 		: "opensearchproject/opensearch:2.5.0";
 
 // With --artifact the built module (dist/) is mounted instead of the plugin/ sources
 const artifactDir = "./dist/livechat-magento";
 if (artifact && !fs.existsSync(artifactDir)) {
-	throw new Error(`Artifact not found at ${artifactDir}. Run: npm run build`);
+	throw new Error(`Artifact not found at ${artifactDir}. Run: pnpm build`);
 }
 const moduleDir = artifact ? "../../dist/livechat-magento" : "../../plugin";
 
+// Throwaway credentials for the local Docker test instance only; not a real secret.
 const admin = { user: "admin", password: "Admin123!", email: "admin@admin.com" };
 
 echo`Preparing the Magento instance for\n* PHP version: ${phpVersion}\n* Magento version: ${magentoVersion}\n* OpenSearch: ${opensearchImage}\n* Module: ${artifact ? "built artifact" : "plugin/ sources"}\n* Port: ${port}\n* Docker project: ${p}\n`;

@@ -22,12 +22,13 @@
         "zx": "^8.8.5"
     },
     "config": {
-        "php_latest_ver": "8.4",
+        "php_latest_ver": "8.5.12",
         "php_minimum_ver": "8.1",
-        "magento_latest_ver": "2.4.8",
+        "magento_latest_ver": "2.4.9",
         "magento_minimum_ver": "2.4.6"
     },
     "devDependencies": {
         "husky": "^9.1.7"
-    }
+    },
+    "packageManager": "pnpm@11.21.0"
 }
