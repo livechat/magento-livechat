@@ -11,6 +11,7 @@
         "cleanup": "zx ./scripts/magento/cleanup.mjs",
         "composer": "zx ./scripts/php/composer.mjs",
         "test": "zx ./scripts/php/composer.mjs test",
+        "test:magento": "zx ./scripts/magento/test.mjs",
         "phpcs": "zx ./scripts/php/composer.mjs static-analysis",
         "phpcbf": "zx ./scripts/php/composer.mjs fix-static-analysis",
         "build": "zx ./scripts/build/prepare-plugins.mjs",

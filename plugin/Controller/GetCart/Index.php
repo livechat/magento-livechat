@@ -82,8 +82,8 @@ class Index extends \Magento\Framework\App\Action\Action
         return str_replace(
             ['%createdAt%', '%updatedAt%', '%status%', '%state%', '%grandTotal%', '%currency%'],
             [
-                $orderRecord->getData('updated_at'),
                 $orderRecord->getData('created_at'),
+                $orderRecord->getData('updated_at'),
                 $orderRecord->getData('status'),
                 $orderRecord->getData('state'),
                 number_format(round($orderRecord->getData('grand_total'), 2), 2),

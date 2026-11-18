@@ -8,6 +8,8 @@
 	<testsuites>
 		<testsuite name="unit">
 			<directory suffix="Test.php">../plugin/Test/Unit</directory>
+			<!-- Needs real Magento classes: run with pnpm test:magento -->
+			<exclude>../plugin/Test/Unit/Controller</exclude>
 		</testsuite>
 	</testsuites>
 </phpunit>
