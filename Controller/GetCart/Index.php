@@ -100,7 +100,7 @@ class Index extends \Magento\Framework\App\Action\Action
      */
     public function showCustomParam($key)
     {
-        return (boolean) $this->_scopeConfig->getValue($key, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+        return (bool) $this->_scopeConfig->getValue($key, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 
     /**
