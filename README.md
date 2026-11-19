@@ -20,3 +20,14 @@ This module adds [LiveChat](https://www.livechatinc.com/) to your Magento 2 site
 * Sending customers last order details to LiveChat,
 * Sending customers last order details to LiveChat,
 * Set-up [goal](https://www.livechatinc.com/kb/goals-set-up-and-use/) for order placed event.
+
+### Development
+
+Docker-based dev environment, tests and build (see [AGENTS.md](AGENTS.md) for details):
+
+* `cp .env.example .env` and fill in your repo.magento.com keys
+* `pnpm install`
+* `pnpm magento-latest` - bootstrap Magento 2.4.9 with the module (`magento-minimum` for 2.4.6)
+* `pnpm test` / `pnpm phpcs` - PHPUnit and coding standard checks
+* `pnpm build` - build the artifact into `dist/`
+* `pnpm cleanup` - remove environments
