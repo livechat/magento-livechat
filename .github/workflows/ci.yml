@@ -10,7 +10,7 @@ permissions:
 jobs:
   test:
     name: Tests
-    runs-on: docker-image-builder
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -54,7 +54,7 @@ jobs:
 
   phpcs:
     name: PHPCS
-    runs-on: docker-image-builder
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -98,7 +98,7 @@ jobs:
 
   magento-tests:
     name: Magento unit tests
-    runs-on: docker-image-builder
+    runs-on: ubuntu-latest
     env:
       COMMERCE_PUBLIC_KEY: ${{ secrets.COMMERCE_PUBLIC_KEY }}
       COMMERCE_PRIVATE_KEY: ${{ secrets.COMMERCE_PRIVATE_KEY }}
