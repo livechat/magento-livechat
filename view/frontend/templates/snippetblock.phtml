@@ -1,11 +1,12 @@
 <?php
 /**
  * @var $block \Magento\Framework\View\Element\Template
+ * @var $secureRenderer \Magento\Framework\View\Helper\SecureHtmlRenderer
  */
 ?>
 <?php if (null !== $block->getLicenseId()): ?>
 <script src="<?= $block->escapeUrl($block->getUrl('livechat/getvisitor')) ?>"></script>
-<script>
+<?php ob_start(); try { ?>
   window.__lc = window.__lc || {};
   window.__lc.integration_name = "magento";
   window.__lc.product_name = "livechat";
@@ -98,9 +99,17 @@
     }
 
   <?php endif; ?>
-</script>
+<?php $scriptContent = ob_get_contents(); } finally { ob_end_clean(); } ?>
+<?php if (isset($secureRenderer)): ?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $scriptContent, false) ?>
 <?php else: ?>
-<script>
-  console.log('Please go to "Stores => Settings => Configuration" and configure your LiveChat account.');
-</script>
+<script><?= /* @noEscape */ $scriptContent ?></script>
+<?php endif; ?>
+<?php else: ?>
+<?php $noticeContent = 'console.log(\'Please go to "Stores => Settings => Configuration" and configure your LiveChat account.\');'; ?>
+<?php if (isset($secureRenderer)): ?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $noticeContent, false) ?>
+<?php else: ?>
+<script><?= /* @noEscape */ $noticeContent ?></script>
+<?php endif; ?>
 <?php endif; ?>
