@@ -13,6 +13,8 @@ class SnippetBlockTemplateTest extends TestCase
 
     public function testSnippetScriptIsRenderedThroughSecureRenderer(): void
     {
+        $this->skipWithoutSecureRenderer();
+
         $block = $this->createStub(SnippetBlock::class);
         $block->method('getLicenseId')->willReturn('12345678');
         $block->method('isCartSet')->willReturn(false);
@@ -40,6 +42,8 @@ class SnippetBlockTemplateTest extends TestCase
 
     public function testNotConfiguredNoticeIsRenderedThroughSecureRenderer(): void
     {
+        $this->skipWithoutSecureRenderer();
+
         $block = $this->createStub(SnippetBlock::class);
         $block->method('getLicenseId')->willReturn(null);
 
@@ -61,6 +65,8 @@ class SnippetBlockTemplateTest extends TestCase
 
     public function testCartBranchIsIncludedInRenderedScript(): void
     {
+        $this->skipWithoutSecureRenderer();
+
         $block = $this->createStub(SnippetBlock::class);
         $block->method('getLicenseId')->willReturn('12345678');
         $block->method('isCartSet')->willReturn(true);
@@ -108,6 +114,13 @@ class SnippetBlockTemplateTest extends TestCase
         $output = $this->render($block, null);
 
         $this->assertStringContainsString('<script>console.log(', $output);
+    }
+
+    private function skipWithoutSecureRenderer(): void
+    {
+        if (!class_exists(SecureHtmlRenderer::class)) {
+            $this->markTestSkipped('SecureHtmlRenderer is available from Magento 2.4.0.');
+        }
     }
 
     private function render(SnippetBlock $block, ?SecureHtmlRenderer $secureRenderer): string
