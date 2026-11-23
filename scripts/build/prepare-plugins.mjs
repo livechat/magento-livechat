@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { $, chalk, echo } from "zx";
+import { composer } from "../php/lib.mjs";
 
 const slug = "livechat-magento";
 const distPath = `./dist/${slug}`;
@@ -22,7 +23,6 @@ echo`Building ${slug} ${version}...`;
 
 fs.rmSync(distPath, { recursive: true, force: true });
 fs.rmSync(zipPath, { force: true });
-fs.mkdirSync(distPath, { recursive: true });
 
 fs.cpSync("./plugin", distPath, { recursive: true });
 
@@ -47,20 +47,8 @@ for (const rule of ignoreRules) {
 
 // The module's Magento dependencies are resolved by the host store, so only
 // the manifest is validated here (no `composer install`).
-await $({
-	verbose: false,
-	env: {
-		...process.env,
-		DOCKER_UID: process.env.DOCKER_UID ?? process.getuid(),
-		DOCKER_GID: process.env.DOCKER_GID ?? process.getgid(),
-	},
-})`docker compose -f ./scripts/php/docker-compose.yml run --rm --remove-orphans php composer validate --no-check-publish --no-interaction --working-dir=${distPath}`;
+await composer(["validate", "--no-check-publish", "--no-interaction"], distPath);
 
-try {
-	await $`zip --version`.quiet();
-} catch {
-	throw new Error("The `zip` command is required to build the artifact");
-}
 // -X drops extra file attributes; the module files sit at the zip root
 await $({ cwd: distPath })`zip -q -X -r ${path.resolve(zipPath)} .`;
 

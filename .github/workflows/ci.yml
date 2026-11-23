@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     name: Tests
@@ -15,47 +19,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
-      - name: Verify Docker is available
-        run: |
-          echo "Checking Docker availability..."
-          docker --version
-          docker compose version
-          echo "Docker is available — OK"
-
-      - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: .nvmrc
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
-
-      - name: Install Aikido Safe Chain
-        run: |
-          curl -fsSL https://github.com/AikidoSec/safe-chain/releases/download/1.5.27/install-safe-chain.sh -o /tmp/install-safe-chain.sh
-          echo "600ebddcb3aaf1fd53653a8d7985df44528722c0f5ee7eb9fff86f26a1a4e5a8  /tmp/install-safe-chain.sh" | sha256sum -c -
-          sh /tmp/install-safe-chain.sh --ci
-          rm /tmp/install-safe-chain.sh
-
-      - name: Install Node.js dependencies
-        run: |
-          echo "Installing Node.js dependencies..."
-          pnpm install --frozen-lockfile
-          echo "Dependencies installed — OK"
+      - uses: ./.github/actions/setup
 
       - name: Install Composer dependencies
-        run: |
-          echo "Installing Composer dependencies..."
-          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
-          pnpm composer install
-          echo "Composer dependencies installed — OK"
+        run: pnpm composer install
 
       - name: Run PHP unit tests
-        run: |
-          echo "Running PHPUnit tests (pnpm test)..."
-          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
-          pnpm test
-          echo "Tests passed — OK"
+        run: pnpm test
 
   phpcs:
     name: PHPCS
@@ -64,47 +34,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
-      - name: Verify Docker is available
-        run: |
-          echo "Checking Docker availability..."
-          docker --version
-          docker compose version
-          echo "Docker is available — OK"
-
-      - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: .nvmrc
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
-
-      - name: Install Aikido Safe Chain
-        run: |
-          curl -fsSL https://github.com/AikidoSec/safe-chain/releases/download/1.5.27/install-safe-chain.sh -o /tmp/install-safe-chain.sh
-          echo "600ebddcb3aaf1fd53653a8d7985df44528722c0f5ee7eb9fff86f26a1a4e5a8  /tmp/install-safe-chain.sh" | sha256sum -c -
-          sh /tmp/install-safe-chain.sh --ci
-          rm /tmp/install-safe-chain.sh
-
-      - name: Install Node.js dependencies
-        run: |
-          echo "Installing Node.js dependencies..."
-          pnpm install --frozen-lockfile
-          echo "Dependencies installed — OK"
+      - uses: ./.github/actions/setup
 
       - name: Install Composer dependencies
-        run: |
-          echo "Installing Composer dependencies..."
-          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
-          pnpm composer install
-          echo "Composer dependencies installed — OK"
+        run: pnpm composer install
 
       - name: Run PHPCS
-        run: |
-          echo "Running PHP_CodeSniffer static analysis (pnpm phpcs)..."
-          export DOCKER_UID=$(id -u) DOCKER_GID=$(id -g)
-          pnpm phpcs
-          echo "No code style violations found — OK"
+        run: pnpm phpcs
 
   magento-tests:
     name: Magento unit tests
@@ -116,45 +52,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
 
-      - name: Verify Docker is available
-        run: |
-          echo "Checking Docker availability..."
-          docker --version
-          docker compose version
-          echo "Docker is available — OK"
-
-      - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: .nvmrc
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
-
-      - name: Install Aikido Safe Chain
-        run: |
-          curl -fsSL https://github.com/AikidoSec/safe-chain/releases/download/1.5.27/install-safe-chain.sh -o /tmp/install-safe-chain.sh
-          echo "600ebddcb3aaf1fd53653a8d7985df44528722c0f5ee7eb9fff86f26a1a4e5a8  /tmp/install-safe-chain.sh" | sha256sum -c -
-          sh /tmp/install-safe-chain.sh --ci
-          rm /tmp/install-safe-chain.sh
-
-      - name: Install Node.js dependencies
-        run: |
-          echo "Installing Node.js dependencies..."
-          pnpm install --frozen-lockfile
-          echo "Dependencies installed — OK"
+      - uses: ./.github/actions/setup
 
       - name: Bootstrap Magento (minimum supported versions)
-        run: |
-          echo "Bootstrapping Magento (pnpm magento-minimum)..."
-          pnpm magento-minimum
-          echo "Magento ready — OK"
+        run: pnpm magento-minimum
 
       - name: Run Magento-dependent unit tests
-        run: |
-          echo "Running tests inside Magento (pnpm test:magento)..."
-          pnpm test:magento
-          echo "Tests passed — OK"
+        run: pnpm test:magento
 
       - name: Remove Magento environment
         if: always()

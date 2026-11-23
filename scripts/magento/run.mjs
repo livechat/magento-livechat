@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { $, chalk, dotenv, echo, fs, minimist } from "zx";
+import { composeFile, projectsFile } from "./lib.mjs";
 
 const MIN_MAGENTO = "2.4.6";
 const MIN_PHP = "8.1";
@@ -56,15 +57,12 @@ const composerAuth = JSON.stringify({
 const port = portArg ?? Math.floor(Math.random() * (8190 - 8090 + 1)) + 8090;
 const dbPort = dbPortArg ?? Math.floor(Math.random() * (8390 - 8290 + 1)) + 8290;
 const p = `magento_${crypto.randomBytes(3).toString("hex").slice(0, 5)}`;
-const f = "./scripts/magento/docker-compose.yml";
-// Magento < 2.4.8 does not support OpenSearch 2
-const opensearchImage =
-	compare(magentoVersion, "2.4.8") >= 0
-		? "opensearchproject/opensearch:2.19.7"
-		: "opensearchproject/opensearch:2.5.0";
-
-// Magento < 2.4.8 only supports MySQL 8.0
-const dbImage = compare(magentoVersion, "2.4.8") >= 0 ? "mysql:8" : "mysql:8.0";
+const f = composeFile;
+// Magento < 2.4.8 supports neither OpenSearch 2 nor MySQL 8.4
+const modernStack = compare(magentoVersion, "2.4.8") >= 0;
+const opensearchImage = modernStack
+	? "opensearchproject/opensearch:2.19.7"
+	: "opensearchproject/opensearch:2.5.0";
 
 // With --artifact the built module (dist/) is mounted instead of the plugin/ sources
 const artifactDir = "./dist/livechat-magento";
@@ -78,7 +76,7 @@ const admin = { user: "admin", password: "Admin123!", email: "admin@admin.com" }
 
 echo`Preparing the Magento instance for\n* PHP version: ${phpVersion}\n* Magento version: ${magentoVersion}\n* OpenSearch: ${opensearchImage}\n* Module: ${artifact ? "built artifact" : "plugin/ sources"}\n* Port: ${port}\n* Docker project: ${p}\n`;
 
-fs.appendFileSync("./scripts/magento/.projects", p + "\n");
+fs.appendFileSync(projectsFile, p + "\n");
 
 $.log = (entry) => {
 	if (entry.kind === "cmd") {
@@ -96,7 +94,7 @@ const $$ = $({
 		MAGENTO_VERSION: magentoVersion,
 		MODULE_DIR: moduleDir,
 		OPENSEARCH_IMAGE: opensearchImage,
-		DB_IMAGE: dbImage,
+		DB_IMAGE: modernStack ? "mysql:8" : "mysql:8.0",
 		COMPOSER_AUTH: composerAuth,
 	},
 });

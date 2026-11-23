@@ -1,28 +1,21 @@
 import { $, chalk, echo, fs, minimist } from "zx";
+import { composeFile, projectsFile, readProjects } from "./lib.mjs";
 
 const { project, images } = minimist(process.argv.slice(2), {
 	string: ["project"],
 	boolean: ["images"],
 });
 
-const projectsFile = "./scripts/magento/.projects";
-
-const projects = fs.existsSync(projectsFile)
-	? fs.readFileSync(projectsFile, "utf8").split("\n")
-	: [];
+const projects = readProjects();
 const toRemove = project ? projects.filter((p) => p === project) : projects;
 
 for (const name of toRemove) {
-	if (!name) {
-		continue;
-	}
-
 	echo`Cleaning up project: ${name}`;
 
-	await $`docker compose -f ./scripts/magento/docker-compose.yml -p ${name} down -v --remove-orphans`;
+	await $`docker compose -f ${composeFile} -p ${name} down -v --remove-orphans`;
 }
 
-const remaining = projects.filter((p) => p && !toRemove.includes(p));
+const remaining = projects.filter((p) => !toRemove.includes(p));
 if (!remaining.length) {
 	fs.rmSync(projectsFile, { force: true });
 } else {

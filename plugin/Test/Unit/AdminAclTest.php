@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class AdminAclTest extends TestCase
 {
 	private const MODULE_ROOT = __DIR__ . '/../..';
-	private const RESOURCE_DECLARATION = "const ADMIN_RESOURCE = 'LiveChat_LiveChat::mymodule';";
+	private const RESOURCE = 'LiveChat_LiveChat::mymodule';
 
 	public function testAclDeclaresConfigResource(): void
 	{
@@ -16,7 +16,7 @@ class AdminAclTest extends TestCase
 
 		$this->assertNotFalse($xml);
 		$ids = array_map('strval', $xml->xpath('//resource/@id'));
-		$this->assertContains('LiveChat_LiveChat::mymodule', $ids);
+		$this->assertContains(self::RESOURCE, $ids);
 	}
 
 	public function testConfigSectionUsesDeclaredResource(): void
@@ -24,7 +24,7 @@ class AdminAclTest extends TestCase
 		$xml = simplexml_load_file(self::MODULE_ROOT . '/etc/adminhtml/system.xml');
 
 		$this->assertNotFalse($xml);
-		$this->assertSame('LiveChat_LiveChat::mymodule', (string)$xml->xpath('//section/resource')[0]);
+		$this->assertSame(self::RESOURCE, (string)$xml->xpath('//section/resource')[0]);
 	}
 
 	public function testEveryAdminControllerDeclaresAdminResource(): void
@@ -34,7 +34,7 @@ class AdminAclTest extends TestCase
 		$this->assertNotEmpty($files);
 		foreach ($files as $file) {
 			$contents = file_get_contents($file);
-			$this->assertStringContainsString(self::RESOURCE_DECLARATION, $contents, $file);
+			$this->assertStringContainsString("const ADMIN_RESOURCE = '" . self::RESOURCE . "';", $contents, $file);
 		}
 	}
 }
