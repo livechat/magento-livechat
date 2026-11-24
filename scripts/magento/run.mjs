@@ -110,7 +110,7 @@ const imageExists =
 	(await $$({ nothrow: true })`docker image inspect ${imageTag}`).exitCode === 0;
 if (rebuildImage || !imageExists) {
 	echo(chalk.bold(`Building ${imageTag} (downloads Magento, slow only once)...`));
-	await $$`docker compose -f ${f} -p ${p} build php`;
+	await $$`docker compose -f ${f} -p ${p} build --progress=plain php`;
 } else {
 	echo(chalk.bold(`Reusing image ${imageTag}`));
 }
