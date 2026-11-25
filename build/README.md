@@ -48,7 +48,7 @@ pnpm phpcs          # Magento2 coding standard
 pnpm phpcbf         # auto-fix (review the diff)
 ```
 
-A pre-push hook runs `pnpm phpcs && pnpm test`.
+A pre-push hook (`build/.husky/pre-push`) runs `pnpm phpcs && pnpm test` from `build/`. `pnpm install` in `build/` points `core.hooksPath` at it.
 
 ## Build
 

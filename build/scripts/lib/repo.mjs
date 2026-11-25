@@ -8,9 +8,9 @@ const git = $({ cwd: rootDir, verbose: false });
 
 const topLevel = (file) => file.split("/")[0];
 
-// Tracked and not-ignored untracked files that still exist in the working tree
+// Tracked files that still exist in the working tree (same set as `git archive`)
 const listFiles = async () =>
-	(await git`git ls-files -z --cached --others --exclude-standard`).stdout
+	(await git`git ls-files -z`).stdout
 		.split("\0")
 		.filter((file) => file && fs.existsSync(path.join(rootDir, file)));
 

@@ -66,6 +66,6 @@ Release PR branches are named `release/<version>`. Merging one to `master` (merg
 
 ## Conventions
 
-- The module is mounted at `app/code/LiveChat/LiveChat` in the dev environment (not a composer symlink — Magento rejects templates outside its root). `run.mjs` bind-mounts only the module's top-level entries (plus `Test/`), generated into `build/scripts/magento/.module.compose.yml`, so `build/` never reaches `app/code`; restart the environment after adding a new top-level file or directory.
+- The module is mounted at `app/code/LiveChat/LiveChat` in the dev environment (not a composer symlink — Magento rejects templates outside its root). `run.mjs` bind-mounts only the module's top-level entries (plus `Test/`), generated into `build/scripts/magento/.module.compose.yml`, so `build/` never reaches `app/code`; restart the environment after adding a new top-level file or directory. Only git-tracked files are mounted and packaged, so `git add` new files first.
 - Unit tests that need Magento classes require adding `magento/framework` to `build/dev/composer.json` (needs repo.magento.com auth).
 - Never commit `build/.env`.
