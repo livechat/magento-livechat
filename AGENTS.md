@@ -62,7 +62,7 @@ pnpm release:check --base origin/master   # version bumped, tag free, CHANGELOG.
 pnpm release:notes --out release-notes.md # bullets of the current version from plugin/CHANGELOG.md
 pnpm test:release                         # unit tests for the release scripts
 ```
-Release PR branches are named `release/<version>` or `<ticket>--release-<version>`. Merging one to `master` runs the `Create Release` workflow (tag, build, GitHub release).
+Release PR branches are named `release/<version>` or `<ticket>--release-<version>`. Merging one to `master` (merged PR, not a direct push) runs the `Create Release` workflow (tag, build, GitHub release).
 
 ## Conventions
 

@@ -60,7 +60,7 @@ Exclusions are listed in `plugin/.pluginignore`.
 Releases are cut from `master` in two automated steps:
 
 1. **Release PR** - run the `prepare-release` skill ([`.agents/skills/prepare-release`](.agents/skills/prepare-release/SKILL.md)) or do it by hand: bump `version` in `plugin/composer.json`, add a `## <version>` section with bullet points to `plugin/CHANGELOG.md` (no Jira keys), and open a PR from a `release/<version>` (or `<ticket>--release-<version>`) branch. The `Release PR` workflow fails unless the version was bumped and the changelog entry exists. Check locally with `pnpm release:check --base origin/master`.
-2. **Create Release** - merging the PR triggers the `Create Release` workflow: it tags `v<version>`, builds `livechat-magento-<version>.zip` and publishes a GitHub release with the changelog bullets as notes. It can also be re-run from Actions -> Create Release.
+2. **Create Release** - merging the PR (only a `release/*` or `*--release-*` branch) triggers the `Create Release` workflow: it tags `v<version>`, builds `livechat-magento-<version>.zip` and publishes a GitHub release with the changelog bullets as notes. It can also be re-run from Actions -> Create Release.
 
 ## CI
 
