@@ -1,6 +1,8 @@
 import crypto from "crypto";
 import { $, chalk, dotenv, echo, fs, minimist } from "zx";
-import { composeFile, projectsFile } from "./lib.mjs";
+import path from "path";
+import { moduleEntries, rootDir } from "../lib/repo.mjs";
+import { composeFile, moduleOverrideFile, projectsFile } from "./lib.mjs";
 
 const MIN_MAGENTO = "2.4.6";
 const MIN_PHP = "8.1";
@@ -57,24 +59,34 @@ const composerAuth = JSON.stringify({
 const port = portArg ?? Math.floor(Math.random() * (8190 - 8090 + 1)) + 8090;
 const dbPort = dbPortArg ?? Math.floor(Math.random() * (8390 - 8290 + 1)) + 8290;
 const p = `magento_${crypto.randomBytes(3).toString("hex").slice(0, 5)}`;
-const f = composeFile;
+const compose = ["-f", composeFile, "-f", moduleOverrideFile];
 // Magento < 2.4.8 supports neither OpenSearch 2 nor MySQL 8.4
 const modernStack = compare(magentoVersion, "2.4.8") >= 0;
 const opensearchImage = modernStack
 	? "opensearchproject/opensearch:2.19.7"
 	: "opensearchproject/opensearch:2.5.0";
 
-// With --artifact the built module (dist/) is mounted instead of the plugin/ sources
-const artifactDir = "./dist/livechat-magento";
+// With --artifact the built module (build/dist) is mounted instead of the working tree.
+// Only the module's top-level entries are mounted, so build/, .github etc. never reach app/code.
+const artifactDir = path.join(rootDir, "build/dist/livechat-magento");
 if (artifact && !fs.existsSync(artifactDir)) {
 	throw new Error(`Artifact not found at ${artifactDir}. Run: pnpm build`);
 }
-const moduleDir = artifact ? "../../dist/livechat-magento" : "../../plugin";
+const moduleSource = artifact ? artifactDir : rootDir;
+const entries = artifact ? fs.readdirSync(artifactDir) : [...(await moduleEntries()), "Test"]; // Test is export-ignored but needed by pnpm test:magento
+const mounts = (suffix = "") =>
+	entries
+		.map((entry) => `      - ${path.join(moduleSource, entry)}:/var/www/html/app/code/LiveChat/LiveChat/${entry}${suffix}`)
+		.join("\n");
+fs.writeFileSync(
+	moduleOverrideFile,
+	`services:\n  php:\n    volumes:\n${mounts()}\n  web:\n    volumes:\n${mounts(":ro")}\n`,
+);
 
 // Throwaway credentials for the local Docker test instance only; not a real secret.
 const admin = { user: "admin", password: "Admin123!", email: "admin@admin.com" };
 
-echo`Preparing the Magento instance for\n* PHP version: ${phpVersion}\n* Magento version: ${magentoVersion}\n* OpenSearch: ${opensearchImage}\n* Module: ${artifact ? "built artifact" : "plugin/ sources"}\n* Port: ${port}\n* Docker project: ${p}\n`;
+echo`Preparing the Magento instance for\n* PHP version: ${phpVersion}\n* Magento version: ${magentoVersion}\n* OpenSearch: ${opensearchImage}\n* Module: ${artifact ? "built artifact" : "working tree"}\n* Port: ${port}\n* Docker project: ${p}\n`;
 
 fs.appendFileSync(projectsFile, p + "\n");
 
@@ -92,7 +104,6 @@ const $$ = $({
 		DB_PORT: dbPort,
 		PHP_VERSION: phpVersion,
 		MAGENTO_VERSION: magentoVersion,
-		MODULE_DIR: moduleDir,
 		OPENSEARCH_IMAGE: opensearchImage,
 		DB_IMAGE: modernStack ? "mysql:8" : "mysql:8.0",
 		COMPOSER_AUTH: composerAuth,
@@ -101,7 +112,7 @@ const $$ = $({
 
 // Numeric www-data uid:gid, because some runtimes (e.g. Kiri) fail to resolve the user name in compose exec
 const exec = (...cmd) =>
-	$$`docker compose -f ${f} -p ${p} exec -T -u 33:33 php ${cmd}`;
+	$$`docker compose ${compose} -p ${p} exec -T -u 33:33 php ${cmd}`;
 const magento = (...args) => exec("php", "-d", "memory_limit=-1", "bin/magento", ...args);
 
 /** ----- MAGENTO IMAGE (built once per Magento + PHP version, reused afterwards) ----- */
@@ -110,13 +121,13 @@ const imageExists =
 	(await $$({ nothrow: true })`docker image inspect ${imageTag}`).exitCode === 0;
 if (rebuildImage || !imageExists) {
 	echo(chalk.bold(`Building ${imageTag} (downloads Magento, slow only once)...`));
-	await $$`docker compose -f ${f} -p ${p} build --progress=plain php`;
+	await $$`docker compose ${compose} -p ${p} build --progress=plain php`;
 } else {
 	echo(chalk.bold(`Reusing image ${imageTag}`));
 }
 
 /** ----- RUNNING STACK (waits for db + opensearch healthchecks) ----- */
-await $$`docker compose -f ${f} -p ${p} up -d --wait`;
+await $$`docker compose ${compose} -p ${p} up -d --wait`;
 
 /** ----- INSTALLING MAGENTO ----- */
 await magento(

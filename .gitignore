@@ -1,8 +1,9 @@
-dist
-scripts/magento/.projects
+build/dist
+build/scripts/magento/.projects
+build/scripts/magento/.module.compose.yml
 
 # secrets
-.env
+build/.env
 
 # javascript
 node_modules

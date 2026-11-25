@@ -2,7 +2,13 @@
 <ruleset name="LiveChat Magento module">
 	<description>Magento 2 coding standard for the LiveChat module.</description>
 
-	<file>../plugin</file>
+	<file>../../Block</file>
+	<file>../../Controller</file>
+	<file>../../Helper</file>
+	<file>../../Test</file>
+	<file>../../etc</file>
+	<file>../../view</file>
+	<file>../../registration.php</file>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 
 	<arg name="extensions" value="php,phtml"/>

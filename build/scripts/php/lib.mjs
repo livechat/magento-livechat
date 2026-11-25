@@ -2,8 +2,8 @@ import { $ } from "zx";
 
 const phpVersion = process.env.npm_package_config_php_minimum_ver ?? "8.1";
 
-// Runs composer in the PHP tooling container; `workingDir` is relative to the repo root
-export const composer = (args, workingDir = "dev") =>
+// Runs composer in the PHP tooling container; `workingDir` is relative to the repo root (mounted at /home/www-data)
+export const composer = (args, workingDir = "build/dev") =>
 	$({
 		verbose: false,
 		env: {

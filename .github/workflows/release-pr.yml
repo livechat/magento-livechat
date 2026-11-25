@@ -11,6 +11,10 @@ concurrency:
   group: release-pr-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    working-directory: build
+
 jobs:
   release-checks:
     name: Version and changelog

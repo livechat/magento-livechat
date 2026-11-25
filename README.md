@@ -1,67 +1,36 @@
-# Magento LiveChat
+# Magento LiveChat Module
 
-Repository of the `LiveChat_LiveChat` Magento 2 module. The module itself lives in [`plugin/`](plugin/); for what it does and how to install it as a user, see [plugin/README.md](plugin/README.md).
+This module adds [LiveChat](https://www.livechat.com/) to your Magento 2 store.
 
-This document covers developing, testing and building the module. Deeper notes for contributors and agents are in [AGENTS.md](AGENTS.md).
+## Requirements
 
-## Repository layout
+* Magento 2.4.6 or newer
+* PHP 8.1 or newer
 
-* `plugin/` - the Magento module (what ships)
-* `dev/` - dev-only Composer tooling (PHPUnit, phpcs + Magento coding standard)
-* `scripts/` - Docker environments (`magento/`), Composer in Docker (`php/`), artifact build (`build/`)
+## Installation
 
-## Prerequisites
-
-* Docker
-* Node.js (version in `.nvmrc`) and pnpm
-* repo.magento.com keys (Magento environments only)
+```bash
+composer require livechat/module-magento-livechat
+php bin/magento module:enable LiveChat_LiveChat
+php bin/magento setup:upgrade
+php bin/magento setup:static-content:deploy
+php bin/magento cache:clean
+```
 
 ## Setup
 
-```bash
-cp .env.example .env    # fill COMMERCE_PUBLIC_KEY / COMMERCE_PRIVATE_KEY
-pnpm install
-```
+In the Magento admin go to **Stores > Configuration > LiveChat**, then connect your existing LiveChat account or create a new one.
 
-## Development environment
+## Features
 
-```bash
-pnpm magento-minimum                  # PHP 8.1 + Magento 2.4.6
-pnpm magento-latest                   # PHP 8.5 + Magento 2.4.9
-pnpm magento-latest:artifact          # same, but mounts the built dist/ artifact (run pnpm build first)
-pnpm magento-latest --rebuild-image   # force rebuilding the cached Magento image
-pnpm cleanup                          # remove environments (stacks + volumes)
-pnpm cleanup --images                 # also delete cached livechat-magento:* images
-```
+* Connecting an existing LiveChat account
+* Creating a new LiveChat account
+* Injecting the LiveChat JS snippet into the storefront
+* Sending customer details to LiveChat
+* Sending customer cart details to LiveChat
+* Sending customer last order details to LiveChat
+* Setting up a [goal](https://www.livechat.com/kb/goals-set-up-and-use/) for the order placed event
 
-The first run per Magento/PHP version builds a ~2 GB image; later runs reuse it. The script prints the storefront URL (random port). Admin: `/admin`, user `admin`, password `Admin123!`.
+## License
 
-## Testing and static analysis
-
-```bash
-pnpm test           # PHPUnit in Docker
-pnpm test:magento   # controller tests that need real Magento classes, run inside a running environment
-pnpm phpcs          # Magento2 coding standard
-pnpm phpcbf         # auto-fix (review the diff)
-```
-
-A pre-push hook runs `pnpm phpcs && pnpm test`.
-
-## Build
-
-```bash
-pnpm build   # dist/livechat-magento/ + dist/livechat-magento-<version>.zip (needs `zip`)
-```
-
-Exclusions are listed in `plugin/.pluginignore`.
-
-## Releasing
-
-Releases are cut from `master` in two automated steps:
-
-1. **Release PR** - run the `prepare-release` skill ([`.agents/skills/prepare-release`](.agents/skills/prepare-release/SKILL.md)) or do it by hand: bump `version` in `plugin/composer.json`, add a `## <version>` section with bullet points to `plugin/CHANGELOG.md` (no Jira keys), and open a PR from a `release/<version>` (or `<ticket>--release-<version>`) branch. The `Release PR` workflow fails unless the version was bumped and the changelog entry exists. Check locally with `pnpm release:check --base origin/master`.
-2. **Create Release** - merging the PR (only a `release/*` or `*--release-*` branch) triggers the `Create Release` workflow: it tags `v<version>`, builds `livechat-magento-<version>.zip` and publishes a GitHub release with the changelog bullets as notes. It can also be re-run from Actions -> Create Release.
-
-## CI
-
-GitHub Actions runs `test`, `phpcs` and `magento-tests` (Magento unit tests on the minimum versions). The last one needs the repository secrets `COMMERCE_PUBLIC_KEY` and `COMMERCE_PRIVATE_KEY` and is skipped for PRs from forks.
+See [LICENSE.txt](LICENSE.txt) and [LICENSE_AFL.txt](LICENSE_AFL.txt).

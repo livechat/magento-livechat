@@ -11,17 +11,18 @@ Magento 2 module (`LiveChat_LiveChat`) that integrates LiveChat into a Magento s
 
 ## Layout
 
-- `plugin/` — the Magento module (what ships). PSR-4 root `LiveChat\LiveChat\` is `plugin/` itself. `plugin/README.md` is user-facing and ships in the artifact; the root `README.md` is for contributors.
-- `dev/` — dev-only Composer tooling (PHPUnit, phpcs + Magento coding standard). Kept separate because the host store supplies the Magento packages; `dev/` holds only test and static-analysis tooling.
-- `scripts/magento/` — Docker environment + bootstrap (`run.mjs`, `cleanup.mjs`)
-- `scripts/php/` — Composer/PHP in Docker
-- `scripts/build/` — artifact build
-- `scripts/release/` — release checks and release-notes extraction (used by CI)
-- `.agents/skills/prepare-release` — skill that prepares a release PR (version bump + `plugin/CHANGELOG.md`)
+- repo root — the Magento module (what ships; Packagist reads `composer.json` here). PSR-4 root `LiveChat\LiveChat\` is the repo root. `README.md` is user-facing and ships; `build/README.md` is for contributors. Paths marked `export-ignore` in `.gitattributes` (`build/`, `.github/`, `Test/`, ...) are excluded from `git archive` and from the build artifact.
+- `build/` — all tooling (`package.json`, `.nvmrc`, `.env`, `.husky/`, `dev/`, `scripts/`); **run every `pnpm` command from `build/`**
+  - `build/dev/` — dev-only Composer tooling (PHPUnit, phpcs + Magento coding standard). Kept separate because the host store supplies the Magento packages; `build/dev/` holds only test and static-analysis tooling.
+  - `build/scripts/magento/` — Docker environment + bootstrap (`run.mjs`, `cleanup.mjs`)
+  - `build/scripts/php/` — Composer/PHP in Docker
+  - `build/scripts/build/` — artifact build
+  - `build/scripts/release/` — release checks and release-notes extraction (used by CI)
+- `.agents/skills/prepare-release` — skill that prepares a release PR (version bump + `CHANGELOG.md`)
 
 ## Commands
 
-All commands run via package scripts; PHP runs inside Docker. Requires Docker and `.env` (copy `.env.example`, fill `COMMERCE_PUBLIC_KEY` / `COMMERCE_PRIVATE_KEY` from repo.magento.com).
+All commands run via package scripts; PHP runs inside Docker. Requires Docker and `build/.env` (copy `build/.env.example`, fill `COMMERCE_PUBLIC_KEY` / `COMMERCE_PRIVATE_KEY` from repo.magento.com).
 
 ### Development environment
 ```bash
@@ -36,36 +37,36 @@ The first run per Magento/PHP version builds a ~2 GB image (downloads Magento); 
 
 ### Testing & static analysis
 ```bash
-pnpm test      # PHPUnit (plugin/Test/Unit), runs in Docker
-pnpm test:magento  # tests under plugin/Test/Unit/Controller need real Magento classes: run inside the latest running env (CI job "Magento unit tests" does this on the minimum versions; needs COMMERCE_PUBLIC_KEY / COMMERCE_PRIVATE_KEY secrets)
+pnpm test      # PHPUnit (Test/Unit), runs in Docker
+pnpm test:magento  # tests under Test/Unit/Controller need real Magento classes: run inside the latest running env (CI job "Magento unit tests" does this on the minimum versions; needs COMMERCE_PUBLIC_KEY / COMMERCE_PRIVATE_KEY secrets)
 pnpm phpcs     # Magento2 coding standard; errors fail, warnings are informational
 pnpm phpcbf    # auto-fix (rewrites source — review the diff)
 ```
-Config lives in `dev/` (`phpunit.xml`, `phpcs.xml`). The module uses tab indentation, so the Magento2 indentation sniffs are disabled in `dev/phpcs.xml`.
+Config lives in `build/dev/` (`phpunit.xml`, `phpcs.xml`). The module uses tab indentation, so the Magento2 indentation sniffs are disabled in `build/dev/phpcs.xml`.
 
-### Composer (runs inside Docker, in `dev/`)
+### Composer (runs inside Docker, in `build/dev/`)
 ```bash
 pnpm composer install
 pnpm composer require --dev <package>
-pnpm composer -d plugin validate   # the module's own composer.json
+pnpm composer -d . validate   # the module's own composer.json (repo root)
 ```
 
 ### Build
 ```bash
-pnpm build   # dist/livechat-magento/ + dist/livechat-magento-<version>.zip (needs the `zip` command)
+pnpm build   # build/dist/livechat-magento/ + build/dist/livechat-magento-<version>.zip (needs the `zip` command)
 ```
-Exclusions are listed in `plugin/.pluginignore`. The build only validates the manifest; it does not run `composer install` (Magento dependencies are resolved by the host store).
+Exclusions come from `export-ignore` in `.gitattributes`. The build only validates the manifest; it does not run `composer install` (Magento dependencies are resolved by the host store).
 
 ### Release
 ```bash
 pnpm release:check --base origin/master   # version bumped, tag free, CHANGELOG.md entry without Jira keys
-pnpm release:notes --out release-notes.md # bullets of the current version from plugin/CHANGELOG.md
+pnpm release:notes --out release-notes.md # bullets of the current version from CHANGELOG.md
 pnpm test:release                         # unit tests for the release scripts
 ```
 Release PR branches are named `release/<version>` or `<ticket>--release-<version>`. Merging one to `master` (merged PR, not a direct push) runs the `Create Release` workflow (tag, build, GitHub release).
 
 ## Conventions
 
-- The module is mounted at `app/code/LiveChat/LiveChat` in the dev environment (not a composer symlink — Magento rejects templates outside its root).
-- Unit tests that need Magento classes require adding `magento/framework` to `dev/composer.json` (needs repo.magento.com auth).
-- Never commit `.env`.
+- The module is mounted at `app/code/LiveChat/LiveChat` in the dev environment (not a composer symlink — Magento rejects templates outside its root). `run.mjs` bind-mounts only the module's top-level entries (plus `Test/`), generated into `build/scripts/magento/.module.compose.yml`, so `build/` never reaches `app/code`; restart the environment after adding a new top-level file or directory.
+- Unit tests that need Magento classes require adding `magento/framework` to `build/dev/composer.json` (needs repo.magento.com auth).
+- Never commit `build/.env`.

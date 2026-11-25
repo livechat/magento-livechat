@@ -13,6 +13,10 @@ concurrency:
   group: create-release
   cancel-in-progress: false
 
+defaults:
+  run:
+    working-directory: build
+
 jobs:
   tag:
     name: Tag
@@ -39,10 +43,10 @@ jobs:
       - name: Create tag
         id: create_tag
         run: |
-          VERSION=$(node -p "require('./plugin/composer.json').version")
+          VERSION=$(node -p "require('../composer.json').version")
           TAG="v$VERSION"
           if [ -n "$(git tag --list "$TAG")" ]; then
-            echo "::error::Git tag $TAG already exists. Bump the version in plugin/composer.json first."
+            echo "::error::Git tag $TAG already exists. Bump the version in composer.json first."
             exit 1
           fi
 
@@ -73,7 +77,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: livechat-magento
-          path: dist/livechat-magento-*.zip
+          path: build/dist/livechat-magento-*.zip
           if-no-files-found: error
 
   release:
@@ -92,7 +96,7 @@ jobs:
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: livechat-magento
-          path: artifacts/
+          path: build/artifacts/
 
       - name: Create GitHub release
         env:

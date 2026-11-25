@@ -38,10 +38,10 @@ export const getChangelogEntry = (changelog, version) => {
 export const validateChangelogEntry = (changelog, version) => {
 	const bullets = getChangelogEntry(changelog, version);
 	if (bullets === null) {
-		return [`plugin/CHANGELOG.md has no "## ${version}" section`];
+		return [`CHANGELOG.md has no "## ${version}" section`];
 	}
 	if (bullets.length === 0) {
-		return [`"## ${version}" in plugin/CHANGELOG.md has no "- " bullet points`];
+		return [`"## ${version}" in CHANGELOG.md has no "- " bullet points`];
 	}
 	return bullets
 		.filter((bullet) => JIRA_KEY.test(bullet))

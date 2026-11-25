@@ -1,0 +1,5 @@
+# The PHP tooling image uses the repository root as its build context
+.git
+build/node_modules
+build/dist
+**/vendor
