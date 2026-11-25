@@ -11,7 +11,7 @@ Magento 2 module (`LiveChat_LiveChat`) that integrates LiveChat into a Magento s
 
 ## Layout
 
-- `plugin/` — the Magento module (what ships). PSR-4 root `LiveChat\LiveChat\` is `plugin/` itself.
+- `plugin/` — the Magento module (what ships). PSR-4 root `LiveChat\LiveChat\` is `plugin/` itself. `plugin/README.md` is user-facing and ships in the artifact; the root `README.md` is for contributors.
 - `dev/` — dev-only Composer tooling (PHPUnit, phpcs + Magento coding standard). Kept separate because the host store supplies the Magento packages; `dev/` holds only test and static-analysis tooling.
 - `scripts/magento/` — Docker environment + bootstrap (`run.mjs`, `cleanup.mjs`)
 - `scripts/php/` — Composer/PHP in Docker
