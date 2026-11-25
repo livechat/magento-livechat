@@ -12,7 +12,7 @@ Produces a release PR. CI (`Release PR` workflow) verifies the version was bumpe
 1. **Sync.** `git status --porcelain` must be clean. `git fetch origin --tags`, then branch from fresh `origin/master`.
 2. **Collect changes.** Last tag: `git describe --tags --abbrev=0 --match 'v*' origin/master`. List what shipped since: `git log <tag>..origin/master --format='%s'` (merge commits and PR titles included). Ignore changes that do not affect the shipped module code (everything not `export-ignore`d in `.gitattributes`) (CI, dev tooling, docs).
 3. **Pick the version** (semver `x.y.z`): fixes → patch, new features → minor, breaking changes → major. Propose one with a one-line reason and confirm with the user if it is not obvious.
-4. **Create the branch** named `release/<version>`, or `<ticket>--release-<version>` when the user gives a ticket. The name must contain `release/` at the start or `--release-`, otherwise the release PR check will not run.
+4. **Create the branch** named `release/<version>` (the release PR check and `Create Release` only run for branches starting with `release/`).
 5. **Bump** `"version"` in `composer.json` (the only place the version lives).
 6. **Update `CHANGELOG.md`**: insert a `## <version>` section directly under `# Changelog` (newest first) with `- ` bullets:
    - one short, user-facing sentence per change, in imperative mood (e.g. `- Fix cart data not being sent for guest visitors`)

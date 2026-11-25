@@ -21,14 +21,13 @@ jobs:
   tag:
     name: Tag
     runs-on: ubuntu-latest
-    # Only a merged release PR from this repository (`release/<version>` or `<ticket>--release-<version>`) releases;
+    # Only a merged release PR from this repository (`release/<version>`) releases;
     # workflow_dispatch is the manual fallback
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.pull_request.merged == true &&
       github.event.pull_request.head.repo.full_name == github.repository &&
-      (startsWith(github.event.pull_request.head.ref, 'release/') ||
-      contains(github.event.pull_request.head.ref, '--release-')))
+      startsWith(github.event.pull_request.head.ref, 'release/'))
     outputs:
       tag: ${{ steps.create_tag.outputs.tag }}
     steps:
