@@ -2,12 +2,12 @@ import fs from "fs";
 import path from "path";
 import { $, chalk, echo } from "zx";
 import { composer } from "../php/lib.mjs";
-import { moduleFiles, rootDir } from "../lib/repo.mjs";
+import { moduleFiles, readVersion, rootDir } from "../lib/repo.mjs";
 
 const slug = "livechat-magento";
 const distPath = path.join(rootDir, "build/dist", slug);
 
-const { version } = JSON.parse(fs.readFileSync(path.join(rootDir, "composer.json"), "utf8"));
+const version = readVersion();
 if (!version) {
 	throw new Error("composer.json has no version");
 }

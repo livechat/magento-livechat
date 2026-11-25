@@ -1,15 +1,11 @@
-import fs from "fs";
-import path from "path";
-import { rootDir } from "../lib/repo.mjs";
-import { $, argv, echo, chalk } from "zx";
+import { $, argv, chalk, echo } from "zx";
+import { readChangelog, readVersion, rootDir } from "../lib/repo.mjs";
 import { compareSemver, isSemver, validateChangelogEntry } from "./lib.mjs";
 
 $.verbose = false;
 $.cwd = rootDir;
 
-const readVersion = (json) => JSON.parse(json).version;
-
-const version = readVersion(fs.readFileSync(path.join(rootDir, "composer.json"), "utf8"));
+const version = readVersion();
 
 const problems = [];
 
@@ -17,7 +13,7 @@ if (!isSemver(version ?? "")) {
 	problems.push(`composer.json version "${version}" is not x.y.z`);
 } else {
 	if (argv.base) {
-		const baseVersion = readVersion((await $`git show ${argv.base}:composer.json`).stdout);
+		const baseVersion = JSON.parse((await $`git show ${argv.base}:composer.json`).stdout).version;
 		if (compareSemver(version, baseVersion) <= 0) {
 			problems.push(
 				`composer.json version ${version} was not bumped (${argv.base} has ${baseVersion})`,
@@ -30,7 +26,7 @@ if (!isSemver(version ?? "")) {
 		problems.push(`git tag v${version} already exists`);
 	}
 
-	problems.push(...validateChangelogEntry(fs.readFileSync(path.join(rootDir, "CHANGELOG.md"), "utf8"), version));
+	problems.push(...validateChangelogEntry(readChangelog(), version));
 }
 
 if (problems.length > 0) {

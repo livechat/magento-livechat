@@ -36,3 +36,8 @@ export const moduleFiles = async () => {
 };
 
 export const moduleEntries = async () => [...new Set((await moduleFiles()).map(topLevel))];
+
+export const readVersion = () =>
+	JSON.parse(fs.readFileSync(path.join(rootDir, "composer.json"), "utf8")).version;
+
+export const readChangelog = () => fs.readFileSync(path.join(rootDir, "CHANGELOG.md"), "utf8");

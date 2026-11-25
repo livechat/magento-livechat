@@ -1,11 +1,10 @@
 import fs from "fs";
-import path from "path";
-import { rootDir } from "../lib/repo.mjs";
 import { argv } from "zx";
+import { readChangelog, readVersion } from "../lib/repo.mjs";
 import { getChangelogEntry } from "./lib.mjs";
 
-const { version } = JSON.parse(fs.readFileSync(path.join(rootDir, "composer.json"), "utf8"));
-const bullets = getChangelogEntry(fs.readFileSync(path.join(rootDir, "CHANGELOG.md"), "utf8"), version);
+const version = readVersion();
+const bullets = getChangelogEntry(readChangelog(), version);
 
 if (!bullets?.length) {
 	throw new Error(`CHANGELOG.md has no entry for ${version}`);
