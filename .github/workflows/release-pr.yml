@@ -1,0 +1,32 @@
+name: Release PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-checks:
+    name: Version and changelog
+    runs-on: ubuntu-latest
+    # Release PRs come from a `release/<version>` or `<ticket>--release-<version>` branch
+    if: startsWith(github.head_ref, 'release/') || contains(github.head_ref, '--release-')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup
+
+      - name: Run release script tests
+        run: pnpm test:release
+
+      - name: Check version bump and changelog
+        run: pnpm release:check --base origin/${{ github.base_ref }}

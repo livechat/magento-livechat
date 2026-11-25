@@ -16,6 +16,8 @@ Magento 2 module (`LiveChat_LiveChat`) that integrates LiveChat into a Magento s
 - `scripts/magento/` — Docker environment + bootstrap (`run.mjs`, `cleanup.mjs`)
 - `scripts/php/` — Composer/PHP in Docker
 - `scripts/build/` — artifact build
+- `scripts/release/` — release checks and release-notes extraction (used by CI)
+- `.agents/skills/prepare-release` — skill that prepares a release PR (version bump + `plugin/CHANGELOG.md`)
 
 ## Commands
 
@@ -53,6 +55,14 @@ pnpm composer -d plugin validate   # the module's own composer.json
 pnpm build   # dist/livechat-magento/ + dist/livechat-magento-<version>.zip (needs the `zip` command)
 ```
 Exclusions are listed in `plugin/.pluginignore`. The build only validates the manifest; it does not run `composer install` (Magento dependencies are resolved by the host store).
+
+### Release
+```bash
+pnpm release:check --base origin/master   # version bumped, tag free, CHANGELOG.md entry without Jira keys
+pnpm release:notes --out release-notes.md # bullets of the current version from plugin/CHANGELOG.md
+pnpm test:release                         # unit tests for the release scripts
+```
+Release PR branches are named `release/<version>` or `<ticket>--release-<version>`. Merging one to `master` runs the `Create Release` workflow (tag, build, GitHub release).
 
 ## Conventions
 

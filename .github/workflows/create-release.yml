@@ -1,0 +1,108 @@
+name: Create Release
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - plugin/composer.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: create-release
+  cancel-in-progress: false
+
+jobs:
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.create_tag.outputs.tag }}
+      release: ${{ steps.create_tag.outputs.release }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup
+
+      - name: Create tag
+        id: create_tag
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          VERSION=$(node -p "require('./plugin/composer.json').version")
+          TAG="v$VERSION"
+          if [ -n "$(git tag --list "$TAG")" ]; then
+            if [ "$EVENT" = "push" ]; then
+              # composer.json changed without a version bump
+              echo "::notice::Tag $TAG already exists, nothing to release."
+              echo "release=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "::error::Git tag $TAG already exists. Bump the version in plugin/composer.json first."
+            exit 1
+          fi
+
+          pnpm release:check
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "release=true" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build artifact
+    runs-on: ubuntu-latest
+    needs: tag
+    if: needs.tag.outputs.release == 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          ref: ${{ needs.tag.outputs.tag }}
+
+      - uses: ./.github/actions/setup
+
+      - name: Build artifact
+        run: pnpm build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: livechat-magento
+          path: dist/livechat-magento-*.zip
+          if-no-files-found: error
+
+  release:
+    name: GitHub release
+    runs-on: ubuntu-latest
+    needs: [tag, build]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        with:
+          ref: ${{ needs.tag.outputs.tag }}
+
+      - uses: ./.github/actions/setup
+
+      - name: Download artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: livechat-magento
+          path: artifacts/
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ needs.tag.outputs.tag }}
+        run: |
+          pnpm release:notes --out release-notes.md
+          gh release create "$TAG" artifacts/livechat-magento-*.zip \
+            --title "$TAG" \
+            --notes-file release-notes.md
