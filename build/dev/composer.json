@@ -16,9 +16,9 @@
 		}
 	],
 	"scripts": {
-		"test": "phpunit -c phpunit.xml",
-		"static-analysis": "phpcs -s",
-		"fix-static-analysis": "phpcbf"
+		"test": "phpunit -c ../../phpunit.xml",
+		"static-analysis": "phpcs -s --standard=../../phpcs.xml",
+		"fix-static-analysis": "phpcbf --standard=../../phpcs.xml"
 	},
 	"config": {
 		"allow-plugins": {

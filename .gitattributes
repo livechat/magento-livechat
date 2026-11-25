@@ -10,3 +10,5 @@
 /.gitattributes export-ignore
 /.dockerignore export-ignore
 /Test export-ignore
+/phpcs.xml export-ignore
+/phpunit.xml export-ignore

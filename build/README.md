@@ -7,7 +7,7 @@ This document covers developing, testing and building the module. Deeper notes f
 ## Repository layout
 
 * repository root - the Magento module (what ships; Packagist reads `composer.json` here)
-* `build/` - everything else: `dev/` (PHPUnit, phpcs + Magento coding standard), `scripts/` (Docker environments in `magento/`, Composer in Docker in `php/`, artifact build in `build/`, release checks in `release/`)
+* `build/` - everything else: `dev/` (Composer dev dependencies: PHPUnit, phpcs + Magento coding standard; their `phpunit.xml`/`phpcs.xml` configs sit at the root), `scripts/` (Docker environments in `magento/`, Composer in Docker in `php/`, artifact build in `build/`, release checks in `release/`)
 
 `.gitattributes` marks `build/`, `.github/`, `Test/` and other non-module paths `export-ignore`, so GitHub source zips, Packagist installs and the build artifact contain only the module.
 

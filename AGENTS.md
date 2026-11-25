@@ -12,8 +12,7 @@ Magento 2 module (`LiveChat_LiveChat`) that integrates LiveChat into a Magento s
 ## Layout
 
 - repo root — the Magento module (what ships; Packagist reads `composer.json` here). PSR-4 root `LiveChat\LiveChat\` is the repo root. `README.md` is user-facing and ships; `build/README.md` is for contributors. Paths marked `export-ignore` in `.gitattributes` (`build/`, `.github/`, `Test/`, ...) are excluded from `git archive` and from the build artifact.
-- `build/` — all tooling (`package.json`, `.nvmrc`, `.env`, `.husky/`, `dev/`, `scripts/`); **run every `pnpm` command from `build/`**
-  - `build/dev/` — dev-only Composer tooling (PHPUnit, phpcs + Magento coding standard). Kept separate because the host store supplies the Magento packages; `build/dev/` holds only test and static-analysis tooling.
+- `build/` — all tooling (`package.json`, `.nvmrc`, `.env`, `.husky/`, `dev/` Composer dev dependencies, `scripts/`); **run every `pnpm` command from `build/`**
   - `build/scripts/magento/` — Docker environment + bootstrap (`run.mjs`, `cleanup.mjs`)
   - `build/scripts/php/` — Composer/PHP in Docker
   - `build/scripts/build/` — artifact build
@@ -42,7 +41,7 @@ pnpm test:magento  # tests under Test/Unit/Controller need real Magento classes:
 pnpm phpcs     # Magento2 coding standard; errors fail, warnings are informational
 pnpm phpcbf    # auto-fix (rewrites source — review the diff)
 ```
-Config lives in `build/dev/` (`phpunit.xml`, `phpcs.xml`). The module uses tab indentation, so the Magento2 indentation sniffs are disabled in `build/dev/phpcs.xml`.
+Config (`phpunit.xml`, `phpcs.xml`) lives next to the module at the repo root and is `export-ignore`d; dev dependencies live in `build/dev/composer.json` (a separate manifest: the module's `autoload.files` entry `registration.php` needs Magento classes, so `vendor/autoload.php` of the module manifest would fatal under PHPUnit/phpcs). The module uses tab indentation, so the Magento2 indentation sniffs are disabled in `phpcs.xml`.
 
 ### Composer (runs inside Docker, in `build/dev/`)
 ```bash

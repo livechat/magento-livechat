@@ -1,15 +1,15 @@
 <phpunit
-	bootstrap="vendor/autoload.php"
+	bootstrap="build/dev/vendor/autoload.php"
 	colors="true"
-	cacheDirectory=".phpunit.cache"
+	cacheDirectory="build/dev/.phpunit.cache"
 	failOnWarning="true"
 	failOnRisky="true"
 >
 	<testsuites>
 		<testsuite name="unit">
-			<directory suffix="Test.php">../../Test/Unit</directory>
+			<directory suffix="Test.php">Test/Unit</directory>
 			<!-- Needs real Magento classes: run with pnpm test:magento -->
-			<exclude>../../Test/Unit/Controller</exclude>
+			<exclude>Test/Unit/Controller</exclude>
 		</testsuite>
 	</testsuites>
 </phpunit>
