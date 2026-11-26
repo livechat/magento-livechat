@@ -1,0 +1,14 @@
+# Everything below is left out of `git archive` (GitHub source zips, Packagist dist installs)
+# and of the build artifact. Only top-level entries are supported.
+/build export-ignore
+/.github export-ignore
+/.agents export-ignore
+/AGENTS.md export-ignore
+/CONTRIBUTING.md export-ignore
+/.editorconfig export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/.dockerignore export-ignore
+/Test export-ignore
+/phpcs.xml export-ignore
+/phpunit.xml export-ignore

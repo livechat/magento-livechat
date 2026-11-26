@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: build
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - uses: ./.github/actions/setup
+
+      - name: Install Composer dependencies
+        run: pnpm composer install
+
+      - name: Run PHP unit tests
+        run: pnpm test
+
+  phpcs:
+    name: PHPCS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - uses: ./.github/actions/setup
+
+      - name: Install Composer dependencies
+        run: pnpm composer install
+
+      - name: Run PHPCS
+        run: pnpm phpcs
+
+  magento-tests:
+    name: Magento unit tests
+    runs-on: ubuntu-latest
+    # Secrets are not available to fork PRs; the job only makes sense for branches of this repository
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      COMMERCE_PUBLIC_KEY: ${{ secrets.COMMERCE_PUBLIC_KEY }}
+      COMMERCE_PRIVATE_KEY: ${{ secrets.COMMERCE_PRIVATE_KEY }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+
+      - uses: ./.github/actions/setup
+
+      - name: Bootstrap Magento (minimum supported versions)
+        run: pnpm magento-minimum
+
+      - name: Run Magento-dependent unit tests
+        run: pnpm test:magento
+
+      - name: Remove Magento environment
+        if: always()
+        run: pnpm cleanup

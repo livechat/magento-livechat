@@ -10,7 +10,7 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
 	 */
 	private $dataHelper;
 	/**
-	 * @var UrlInterface
+	 * @var \Magento\Framework\UrlInterface
 	 */
 	private $urlinterface;
 
@@ -46,7 +46,7 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
 	 */
 	public function isCartSet()
 	{
-		if($this->dataHelper->showCustomParam(Data::LC_CP_SHOW_CART_PRODUCTS) ||
+		if ($this->dataHelper->showCustomParam(Data::LC_CP_SHOW_CART_PRODUCTS) ||
 		   $this->dataHelper->showCustomParam(Data::LC_CP_SHOW_TOTAL_CART_VALUE) ||
 		   $this->dataHelper->showCustomParam(Data::LC_CP_SHOW_TOTAL_ORDERS_COUNT) ||
 		   $this->dataHelper->showCustomParam(Data::LC_CP_SHOW_LAST_ORDER_DETAILS)) {
@@ -58,13 +58,12 @@ class SnippetBlock extends \Magento\Framework\View\Element\Template
 
 	/**
 	 * Checks if there is order success page.
-	 * @return boolean
+	 *
+	 * @return int
 	 */
 	public function isOrderPlacedPage()
 	{
-		if (
-			'checkout/onepage/success/' === str_replace($this->getBaseUrl(), '', $this->urlinterface->getCurrentUrl())
-		) {
+		if ('checkout/onepage/success/' === str_replace($this->getBaseUrl(), '', $this->urlinterface->getCurrentUrl())) {
 			return 1;
 		}
 

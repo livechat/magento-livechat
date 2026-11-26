@@ -1,22 +1,36 @@
 # Magento LiveChat Module
 
-This module adds [LiveChat](https://www.livechatinc.com/) to your Magento 2 site.
+This module adds [LiveChat](https://www.livechat.com/) to your Magento 2 store.
 
-### Installation
+## Requirements
 
-* `composer require livechat/module-magento-livechat:dev-master`
-* `php bin/magento module:enable LiveChat_LiveChat`
-* `php bin/magento setup:upgrade`
-* `php bin/magento setup:static-content:deploy`
-* `php bin/magento cache:clean`
+* Magento 2.4.6 or newer
+* PHP 8.1 or newer
 
-### Features
+## Installation
 
-* Connecting existing LiveChat account,
-* Creating new LiveChat account,
-* Injecting LiveChat JS snippet,
-* Sending customers details to LiveChat,
-* Sending customers cart details to LiveChat,
-* Sending customers last order details to LiveChat,
-* Sending customers last order details to LiveChat,
-* Set-up [goal](https://www.livechatinc.com/kb/goals-set-up-and-use/) for order placed event.
+```bash
+composer require livechat/module-magento-livechat
+php bin/magento module:enable LiveChat_LiveChat
+php bin/magento setup:upgrade
+php bin/magento setup:static-content:deploy
+php bin/magento cache:clean
+```
+
+## Setup
+
+In the Magento admin go to **Stores > Configuration > LiveChat**, then connect your existing LiveChat account or create a new one.
+
+## Features
+
+* Connecting an existing LiveChat account
+* Creating a new LiveChat account
+* Injecting the LiveChat JS snippet into the storefront
+* Sending customer details to LiveChat
+* Sending customer cart details to LiveChat
+* Sending customer last order details to LiveChat
+* Setting up a [goal](https://www.livechat.com/kb/goals-set-up-and-use/) for the order placed event
+
+## License
+
+See [LICENSE.txt](LICENSE.txt) and [LICENSE_AFL.txt](LICENSE_AFL.txt).
